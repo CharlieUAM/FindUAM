@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +57,7 @@ fun PerfilScreen(
         apellido = "Pérez García",
         fotoPerfil = "",
         correoUam = "nicole@uam.edu.ni",
-        telefono = "60000000",
+        telefono = "85013423",
         password = "12345678"
     )
 
@@ -82,23 +83,24 @@ fun PerfilScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(UamTurquoise)
-                    .padding(start = 20.dp, end = 20.dp, top = 42.dp, bottom = 26.dp)
+                    .padding(start = 22.dp, end = 22.dp, top = 46.dp, bottom = 28.dp)
             ) {
                 Text(
                     text = "Mi perfil",
                     color = UamWhite,
-                    fontSize = 24.sp,
+                    fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(68.dp)
+                            .size(76.dp)
                             .clip(CircleShape)
                             .background(UamWhite),
                         contentAlignment = Alignment.Center
@@ -107,27 +109,41 @@ fun PerfilScreen(
                             imageVector = Icons.Default.Image,
                             contentDescription = "Foto de perfil",
                             tint = UamTurquoiseDark,
-                            modifier = Modifier.size(34.dp)
+                            modifier = Modifier.size(38.dp)
                         )
                     }
 
-                    Spacer(modifier = Modifier.size(14.dp))
+                    Spacer(modifier = Modifier.size(16.dp))
 
                     Column {
                         Text(
                             text = "${usuarioDemo.nombre} ${usuarioDemo.apellido}",
                             color = UamWhite,
-                            fontSize = 18.sp,
+                            fontSize = 19.sp,
                             fontWeight = FontWeight.Bold
+                        )
+
+                        Text(
+                            text = usuarioDemo.correoUam,
+                            color = UamWhite,
+                            fontSize = 13.sp
                         )
 
                         Text(
                             text = "Estudiante UAM",
                             color = UamWhite,
-                            fontSize = 13.sp
+                            fontSize = 12.sp
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                PerfilStatCard(
+                    title = "Objetos publicados",
+                    value = "0",
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             Column(
@@ -147,20 +163,21 @@ fun PerfilScreen(
                         modifier = Modifier.padding(18.dp)
                     ) {
                         Text(
-                            text = "Información personal",
+                            text = "Información del usuario",
                             color = UamGrayText,
-                            fontSize = 13.sp
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
 
                         Spacer(modifier = Modifier.height(18.dp))
 
                         PerfilInfoRow(
                             icon = Icons.Default.Badge,
-                            label = "ID de usuario",
-                            value = usuarioDemo.idUsuario.toString()
+                            label = "Nombre completo",
+                            value = "${usuarioDemo.nombre} ${usuarioDemo.apellido}"
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(18.dp))
 
                         PerfilInfoRow(
                             icon = Icons.Default.Phone,
@@ -168,12 +185,47 @@ fun PerfilScreen(
                             value = usuarioDemo.telefono
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(18.dp))
 
                         PerfilInfoRow(
                             icon = Icons.Default.Email,
                             label = "Correo UAM",
                             value = usuarioDemo.correoUam
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = UamWhite
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 3.dp
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(26.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Inventory2,
+                            contentDescription = "Objetos publicados",
+                            tint = UamTurquoiseDark,
+                            modifier = Modifier.size(42.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Text(
+                            text = "Aún no has publicado ningún objeto",
+                            color = UamGrayText,
+                            fontSize = 14.sp
                         )
                     }
                 }
@@ -204,6 +256,41 @@ fun PerfilScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun PerfilStatCard(
+    title: String,
+    value: String,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = UamTurquoiseDark
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = value,
+                color = UamWhite,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = title,
+                color = UamWhite,
+                fontSize = 12.sp
+            )
         }
     }
 }

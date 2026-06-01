@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mail
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -41,6 +40,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ni.edu.uam.finduam.model.Usuario
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import ni.edu.uam.finduam.R
 import ni.edu.uam.finduam.ui.theme.UamDarkText
 import ni.edu.uam.finduam.ui.theme.UamGrayText
 import ni.edu.uam.finduam.ui.theme.UamTurquoise
@@ -91,25 +98,13 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .shadow(
-                        elevation = 10.dp,
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .background(
-                        color = UamTurquoise,
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .padding(18.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Logo FindUAM",
-                    tint = UamWhite
-                )
-            }
+            Image(
+                painter = painterResource(id = R.drawable.logo_uam),
+                contentDescription = "Logo Universidad Americana",
+                modifier = Modifier.size(160.dp),
+                contentScale = ContentScale.Fit
+            )
+
 
             Spacer(modifier = Modifier.height(18.dp))
 
