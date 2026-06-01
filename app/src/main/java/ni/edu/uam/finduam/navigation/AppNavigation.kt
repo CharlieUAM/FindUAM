@@ -1,38 +1,40 @@
 package ni.edu.uam.finduam.navigation
 
-
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ni.edu.uam.finduam.screens.HomePlaceholderScreen
+import ni.edu.uam.finduam.screens.HomeScreen
 import ni.edu.uam.finduam.screens.LoginScreen
+import ni.edu.uam.finduam.screens.PublicarScreen
+import ni.edu.uam.finduam.screens.PerfilScreen
 
-// Objeto que guarda los nombres de las rutas de navegación.
-// Esto evita escribir strings repetidos en varias partes del código.
+
 object Routes {
     const val LOGIN = "login"
     const val HOME = "home"
+    const val PUBLICAR = "publicar"
+    const val PERFIL = "perfil"
 }
 
-// Composable principal encargado de manejar la navegación entre pantallas.
+// Función principal que controla la navegación entre pantallas.
 @Composable
 fun AppNavigation() {
-    // Controlador de navegación de Compose.
+
+    // Controlador de navegación.
     val navController = rememberNavController()
 
-    // Contenedor de navegación.
+    // Contenedor de pantallas.
     NavHost(
         navController = navController,
         startDestination = Routes.LOGIN
     ) {
-        // Ruta de la pantalla Login.
+
+        // Pantalla de inicio de sesión.
         composable(Routes.LOGIN) {
             LoginScreen(
                 onLoginSuccess = {
-                    // Cuando el login sea correcto, navega hacia Home.
                     navController.navigate(Routes.HOME) {
-                        // Elimina Login del historial para que no regrese con atrás.
                         popUpTo(Routes.LOGIN) {
                             inclusive = true
                         }
@@ -41,10 +43,56 @@ fun AppNavigation() {
             )
         }
 
-        // Ruta temporal de Home.
-        // Luego aquí pondremos la pantalla principal real.
+        // Pantalla principal.
         composable(Routes.HOME) {
-            HomePlaceholderScreen()
+            HomeScreen(
+                onNavigateHome = {
+                    navController.navigate(Routes.HOME)
+                },
+                onNavigatePublicar = {
+                    navController.navigate(Routes.PUBLICAR)
+                },
+                onNavigatePerfil = {
+                    navController.navigate(Routes.PERFIL)
+                }
+            )
+        }
+
+        // Pantalla para publicar objeto.
+        composable(Routes.PUBLICAR) {
+            PublicarScreen(
+                onNavigateHome = {
+                    navController.navigate(Routes.HOME)
+                },
+                onNavigatePublicar = {
+                    navController.navigate(Routes.PUBLICAR)
+                },
+                onNavigatePerfil = {
+                    navController.navigate(Routes.PERFIL)
+                }
+            )
+        }
+
+        // Pantalla de perfil.
+        composable(Routes.PERFIL) {
+            PerfilScreen(
+                onCerrarSesion = {
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(Routes.HOME) {
+                            inclusive = true
+                        }
+                    }
+                },
+                onNavigateHome = {
+                    navController.navigate(Routes.HOME)
+                },
+                onNavigatePublicar = {
+                    navController.navigate(Routes.PUBLICAR)
+                },
+                onNavigatePerfil = {
+                    navController.navigate(Routes.PERFIL)
+                }
+            )
         }
     }
 }

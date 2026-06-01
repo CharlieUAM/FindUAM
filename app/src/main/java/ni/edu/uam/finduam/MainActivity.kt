@@ -4,44 +4,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import ni.edu.uam.finduam.navigation.AppNavigation
 import ni.edu.uam.finduam.ui.theme.FindUAMTheme
 
+// Actividad principal de la aplicación.
+// Desde aquí se carga el tema y la navegación general.
 class MainActivity : ComponentActivity() {
+
+    // Método que se ejecuta al abrir la app.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Permite usar el espacio completo de la pantalla.
         enableEdgeToEdge()
+
+        // Define el contenido visual de la aplicación con Jetpack Compose.
         setContent {
+            // Aplica los colores y estilos generales de la app.
             FindUAMTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                // Carga la navegación principal.
+                AppNavigation()
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FindUAMTheme {
-        Greeting("Android")
     }
 }

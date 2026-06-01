@@ -1,0 +1,245 @@
+package ni.edu.uam.finduam.screens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import ni.edu.uam.finduam.model.Usuario
+import ni.edu.uam.finduam.ui.theme.UamBackground
+import ni.edu.uam.finduam.ui.theme.UamDarkText
+import ni.edu.uam.finduam.ui.theme.UamGrayText
+import ni.edu.uam.finduam.ui.theme.UamTurquoise
+import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
+import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
+import ni.edu.uam.finduam.ui.theme.UamWhite
+
+@Composable
+fun PerfilScreen(
+    onCerrarSesion: () -> Unit,
+    onNavigateHome: () -> Unit,
+    onNavigatePublicar: () -> Unit,
+    onNavigatePerfil: () -> Unit
+) {
+    val usuarioDemo = Usuario(
+        idUsuario = 1,
+        nombre = "Nicole",
+        apellido = "Pérez García",
+        fotoPerfil = "",
+        correoUam = "nicole@uam.edu.ni",
+        telefono = "60000000",
+        password = "12345678"
+    )
+
+    Scaffold(
+        containerColor = UamBackground,
+        bottomBar = {
+            BottomNavigationFindUAM(
+                selectedItem = "Perfil",
+                onNavigateHome = onNavigateHome,
+                onNavigatePublicar = onNavigatePublicar,
+                onNavigatePerfil = onNavigatePerfil
+            )
+        }
+    ) { paddingValues ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(UamBackground)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(UamTurquoise)
+                    .padding(start = 20.dp, end = 20.dp, top = 42.dp, bottom = 26.dp)
+            ) {
+                Text(
+                    text = "Mi perfil",
+                    color = UamWhite,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(68.dp)
+                            .clip(CircleShape)
+                            .background(UamWhite),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Image,
+                            contentDescription = "Foto de perfil",
+                            tint = UamTurquoiseDark,
+                            modifier = Modifier.size(34.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(14.dp))
+
+                    Column {
+                        Text(
+                            text = "${usuarioDemo.nombre} ${usuarioDemo.apellido}",
+                            color = UamWhite,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Text(
+                            text = "Estudiante UAM",
+                            color = UamWhite,
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier.padding(20.dp)
+            ) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = UamWhite
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 3.dp
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(18.dp)
+                    ) {
+                        Text(
+                            text = "Información personal",
+                            color = UamGrayText,
+                            fontSize = 13.sp
+                        )
+
+                        Spacer(modifier = Modifier.height(18.dp))
+
+                        PerfilInfoRow(
+                            icon = Icons.Default.Badge,
+                            label = "ID de usuario",
+                            value = usuarioDemo.idUsuario.toString()
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        PerfilInfoRow(
+                            icon = Icons.Default.Phone,
+                            label = "Teléfono",
+                            value = usuarioDemo.telefono
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        PerfilInfoRow(
+                            icon = Icons.Default.Email,
+                            label = "Correo UAM",
+                            value = usuarioDemo.correoUam
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+
+                Button(
+                    onClick = onCerrarSesion,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = UamTurquoiseDark,
+                        contentColor = UamWhite
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Logout,
+                        contentDescription = "Cerrar sesión"
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        text = "Cerrar sesión",
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PerfilInfoRow(
+    icon: ImageVector,
+    label: String,
+    value: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = UamTurquoiseDark,
+            modifier = Modifier.size(24.dp)
+        )
+
+        Spacer(modifier = Modifier.size(14.dp))
+
+        Column {
+            Text(
+                text = label,
+                color = UamGrayText,
+                fontSize = 12.sp
+            )
+
+            Text(
+                text = value,
+                color = UamDarkText,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}

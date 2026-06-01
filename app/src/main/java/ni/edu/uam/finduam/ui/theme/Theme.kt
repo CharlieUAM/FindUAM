@@ -10,10 +10,12 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-// Esquema de colores principal de FindUAM.
+
+
+// Esquema de colores general usando el turquesa del logo UAM como color principal.
 private val FindUAMColorScheme = lightColorScheme(
-    primary = UamNavy,
-    secondary = UamTurquoise,
+    primary = UamTurquoise,
+    secondary = UamTurquoiseDark,
     background = UamBackground,
     surface = UamWhite,
     onPrimary = UamWhite,
@@ -22,8 +24,7 @@ private val FindUAMColorScheme = lightColorScheme(
     onSurface = UamDarkText
 )
 
-// Tema general de la aplicación.
-// Todas las pantallas usarán estos colores base.
+// Tema principal de la aplicación.
 @Composable
 fun FindUAMTheme(
     content: @Composable () -> Unit
