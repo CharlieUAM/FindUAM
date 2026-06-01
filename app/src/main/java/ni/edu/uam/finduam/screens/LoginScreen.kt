@@ -82,7 +82,7 @@ fun LoginScreen(
         fotoPerfil = "",
         correoUam = "nombre@uam.edu.ni",
         telefono = "60000000",
-        password = "12345678"
+        password = "123"
     )
 
     Box(
@@ -100,7 +100,7 @@ fun LoginScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_uam),
-                contentDescription = "Logo Universidad Americana",
+                contentDescription = "Logo Uam",
                 modifier = Modifier.size(160.dp),
                 contentScale = ContentScale.Fit
             )
