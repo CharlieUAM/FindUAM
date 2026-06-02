@@ -55,6 +55,15 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoise
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import androidx.compose.ui.platform.LocalContext
+import java.util.Calendar
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +78,15 @@ fun PublicarScreen(
     var hora by remember { mutableStateOf("") }
     var categoriaSeleccionada by remember { mutableStateOf("") }
     var menuCategoriaAbierto by remember { mutableStateOf(false) }
+    var imagenUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        imagenUri = uri
+    }
 
     val categorias = listOf(
         "Llaves",
@@ -76,8 +94,30 @@ fun PublicarScreen(
         "Bolsas y Mochilas",
         "Documentos",
         "Accesorios"
+
+    )
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, day ->
+            fecha = "$day/${month + 1}/$year"
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
     )
 
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _, hourOfDay, minute ->
+            hora = String.format("%02d:%02d", hourOfDay, minute)
+        },
+        calendar.get(Calendar.HOUR_OF_DAY),
+        calendar.get(Calendar.MINUTE),
+        true
+    )
     Scaffold(
         containerColor = UamBackground,
         bottomBar = {
@@ -143,7 +183,10 @@ fun PublicarScreen(
                             width = 1.dp,
                             color = UamBorder,
                             shape = RoundedCornerShape(18.dp)
-                        ),
+                        )
+                        .clickable {
+                            imagePicker.launch("image/*")
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Column(
@@ -159,7 +202,23 @@ fun PublicarScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "Toca para añadir foto",
+                            text = if (imagenUri == null)
+                                "Toca para añadir foto"
+                            else
+                                "Foto seleccionada ✓",
+                            color = UamGrayText,
+                            fontSize = 13.sp
+                        )
+
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text =
+                                if (imagenUri == null)
+                                    "Toca para añadir foto"
+                                else
+                                    "Foto seleccionada ✓",
                             color = UamGrayText,
                             fontSize = 13.sp
                         )
@@ -260,24 +319,49 @@ fun PublicarScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Box(modifier = Modifier.weight(1f)) {
-                        CampoTextoFindUAM(
-                            label = "Fecha *",
-                            value = fecha,
-                            onValueChange = { fecha = it },
-                            placeholder = "28/05/2026",
-                            icon = Icons.Default.CalendarMonth
+
+                    Column(modifier = Modifier.weight(1f)) {
+
+                        Text(
+                            text = "Fecha *",
+                            color = UamDarkText,
+                            fontSize = 13.sp
                         )
+
+                        Button(
+                            onClick = { datePickerDialog.show() },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = UamWhite
+                            )
+                        ) {
+                            Text(
+                                text = if (fecha.isEmpty()) "Seleccionar" else fecha,
+                                color = UamDarkText
+                            )
+                        }
                     }
 
-                    Box(modifier = Modifier.weight(1f)) {
-                        CampoTextoFindUAM(
-                            label = "Hora *",
-                            value = hora,
-                            onValueChange = { hora = it },
-                            placeholder = "11:15",
-                            icon = Icons.Default.AccessTime
+                    Column(modifier = Modifier.weight(1f)) {
+
+                        Text(
+                            text = "Hora *",
+                            color = UamDarkText,
+                            fontSize = 13.sp
                         )
+
+                        Button(
+                            onClick = { timePickerDialog.show() },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = UamWhite
+                            )
+                        ) {
+                            Text(
+                                text = if (hora.isEmpty()) "Seleccionar" else hora,
+                                color = UamDarkText
+                            )
+                        }
                     }
                 }
 
@@ -285,7 +369,21 @@ fun PublicarScreen(
 
                 Button(
                     onClick = {
-                        // Luego aquí se creará un objeto usando la clase Objeto.
+
+                        if (
+                            nombre.isBlank() ||
+                            categoriaSeleccionada.isBlank() ||
+                            ubicacion.isBlank() ||
+                            fecha.isBlank() ||
+                            hora.isBlank() ||
+                            imagenUri == null
+                        ) {
+                            return@Button
+                        }
+
+                        println("Objeto publicado")
+
+                        onNavigateHome()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
