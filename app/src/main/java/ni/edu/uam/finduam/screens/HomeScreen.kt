@@ -137,12 +137,6 @@ fun HomeScreen(
                     .padding(start = 20.dp, end = 20.dp, top = 42.dp, bottom = 20.dp)
             ) {
                 Text(
-                    text = "Hola 👋",
-                    color = UamWhite,
-                    fontSize = 13.sp
-                )
-
-                Text(
                     text = "FindUAM",
                     color = UamWhite,
                     fontSize = 24.sp,
