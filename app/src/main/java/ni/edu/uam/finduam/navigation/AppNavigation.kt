@@ -8,6 +8,7 @@ import ni.edu.uam.finduam.screens.HomeScreen
 import ni.edu.uam.finduam.screens.LoginScreen
 import ni.edu.uam.finduam.screens.PublicarScreen
 import ni.edu.uam.finduam.screens.PerfilScreen
+import ni.edu.uam.finduam.screens.RegisterScreen
 
 
 object Routes {
@@ -15,6 +16,8 @@ object Routes {
     const val HOME = "home"
     const val PUBLICAR = "publicar"
     const val PERFIL = "perfil"
+
+    const val REGISTER = "register"
 }
 
 // Función principal que controla la navegación entre pantallas.
@@ -32,15 +35,19 @@ fun AppNavigation() {
 
         // Pantalla de inicio de sesión.
         composable(Routes.LOGIN) {
-            LoginScreen(
-                onLoginSuccess = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.LOGIN) {
-                            inclusive = true
+                LoginScreen(
+                    onLoginSuccess = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.LOGIN) {
+                                inclusive = true
+                            }
                         }
+                    },
+                    onRegisterClick = {
+                        navController.navigate(Routes.REGISTER)
                     }
-                }
-            )
+                )
+
         }
 
         // Pantalla principal.
@@ -54,6 +61,17 @@ fun AppNavigation() {
                 },
                 onNavigatePerfil = {
                     navController.navigate(Routes.PERFIL)
+                }
+            )
+        }
+
+        composable(Routes.REGISTER) {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate(Routes.LOGIN)
+                },
+                onBackToLogin = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -94,5 +112,6 @@ fun AppNavigation() {
                 }
             )
         }
+
     }
 }
