@@ -43,6 +43,11 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoise
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 @Composable
 fun PerfilScreen(
@@ -78,6 +83,7 @@ fun PerfilScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(UamBackground)
+                .verticalScroll(rememberScrollState())
         ) {
             Column(
                 modifier = Modifier
@@ -197,37 +203,26 @@ fun PerfilScreen(
 
                 Spacer(modifier = Modifier.height(22.dp))
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = UamWhite
-                    ),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 3.dp
-                    )
+                PerfilMenuItem(
+                    icon = Icons.Default.Badge,
+                    title = "Editar perfil"
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(26.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Inventory2,
-                            contentDescription = "Objetos publicados",
-                            tint = UamTurquoiseDark,
-                            modifier = Modifier.size(42.dp)
-                        )
+                }
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(
-                            text = "Aún no has publicado ningún objeto",
-                            color = UamGrayText,
-                            fontSize = 14.sp
-                        )
-                    }
+                PerfilMenuItem(
+                    icon = Icons.Default.Inventory2,
+                    title = "Mis publicaciones"
+                ) {
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                PerfilMenuItem(
+                    icon = Icons.Default.Settings,
+                    title = "Cambiar contraseña"
+                ) {
                 }
 
                 Spacer(modifier = Modifier.height(22.dp))
@@ -325,6 +320,44 @@ fun PerfilInfoRow(
                 text = value,
                 color = UamDarkText,
                 fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+@Composable
+fun PerfilMenuItem(
+    icon: ImageVector,
+    title: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = UamWhite
+        ),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(18.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = UamTurquoiseDark
+            )
+
+            Spacer(modifier = Modifier.size(14.dp))
+
+            Text(
+                text = title,
+                color = UamDarkText,
                 fontWeight = FontWeight.SemiBold
             )
         }
