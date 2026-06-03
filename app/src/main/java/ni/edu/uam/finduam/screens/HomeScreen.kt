@@ -57,6 +57,7 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
 import java.time.LocalDateTime
+import androidx.compose.foundation.clickable
 
 @Composable
 fun HomeScreen(
@@ -66,6 +67,9 @@ fun HomeScreen(
 ) {
     var textoBusqueda by remember {
         mutableStateOf("")
+    }
+    var categoriaSeleccionada by remember {
+        mutableStateOf("Todos")
     }
 
     val usuarioDemo = Usuario(
@@ -111,6 +115,22 @@ fun HomeScreen(
             publicadoPor = usuarioDemo
         )
     )
+
+    val objetosFiltrados = when (categoriaSeleccionada) {
+        "Llaves" -> objetosPublicados.filter {
+            it.categoria.nombre == "Llaves"
+        }
+
+        "Electrónica" -> objetosPublicados.filter {
+            it.categoria.nombre == "Electrónica"
+        }
+
+        "Bolsas" -> objetosPublicados.filter {
+            it.categoria.nombre == "Bolsas y Mochilas"
+        }
+
+        else -> objetosPublicados
+    }
 
     Scaffold(
         containerColor = UamBackground,
@@ -189,22 +209,49 @@ fun HomeScreen(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CategoriaChip("Todos", true)
-                        CategoriaChip("Bolsas", false)
-                        CategoriaChip("Llaves", false)
-                        CategoriaChip("Electrónica", false)
+                        CategoriaChip(
+                            text = "Todos",
+                            selected = categoriaSeleccionada == "Todos",
+                            onClick = {
+                                categoriaSeleccionada = "Todos"
+                            }
+                        )
+
+                        CategoriaChip(
+                            text = "Bolsas",
+                            selected = categoriaSeleccionada == "Bolsas",
+                            onClick = {
+                                categoriaSeleccionada = "Bolsas"
+                            }
+                        )
+
+                        CategoriaChip(
+                            text = "Llaves",
+                            selected = categoriaSeleccionada == "Llaves",
+                            onClick = {
+                                categoriaSeleccionada = "Llaves"
+                            }
+                        )
+
+                        CategoriaChip(
+                            text = "Electrónica",
+                            selected = categoriaSeleccionada == "Electrónica",
+                            onClick = {
+                                categoriaSeleccionada = "Electrónica"
+                            }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "${objetosPublicados.size} objetos encontrados",
+                        text = "${objetosFiltrados.size} objetos encontrados",
                         color = UamGrayText,
                         fontSize = 13.sp
                     )
                 }
 
-                items(objetosPublicados) { objeto ->
+                items(objetosFiltrados) { objeto ->
                     ObjetoCard(objeto = objeto)
                 }
 
@@ -219,22 +266,28 @@ fun HomeScreen(
 @Composable
 fun CategoriaChip(
     text: String,
-    selected: Boolean
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
     Surface(
+        modifier = Modifier.clickable {
+            onClick()
+        },
         color = if (selected) UamTurquoiseDark else UamTurquoiseLight,
         shape = RoundedCornerShape(50.dp)
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp),
+            modifier = Modifier.padding(
+                horizontal = 14.dp,
+                vertical = 7.dp
+            ),
             color = if (selected) UamWhite else UamTurquoiseDark,
             fontSize = 12.sp,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
         )
     }
 }
-
 @Composable
 fun ObjetoCard(
     objeto: Objeto
