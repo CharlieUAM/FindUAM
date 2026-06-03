@@ -16,8 +16,8 @@ object Routes {
     const val HOME = "home"
     const val PUBLICAR = "publicar"
     const val PERFIL = "perfil"
-
     const val REGISTER = "register"
+    const val MIS_PUBLICACIONES = "mis_publicaciones"
 }
 
 // Función principal que controla la navegación entre pantallas.
