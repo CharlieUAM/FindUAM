@@ -54,10 +54,12 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoise
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
+import androidx.compose.material3.TextButton
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onRegisterClick: () -> Unit
 ) {
     var correoUam by remember {
         mutableStateOf("")
@@ -278,6 +280,20 @@ fun LoginScreen(
                             text = "Entrar",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    TextButton(
+                        onClick = {
+                            onRegisterClick()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "¿No tienes cuenta? Regístrate",
+                            color = UamTurquoise,
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                 }
