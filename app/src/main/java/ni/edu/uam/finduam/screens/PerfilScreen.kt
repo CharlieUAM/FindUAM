@@ -48,14 +48,18 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Settings
 
 @Composable
 fun PerfilScreen(
     onCerrarSesion: () -> Unit,
     onNavigateHome: () -> Unit,
     onNavigatePublicar: () -> Unit,
-    onNavigatePerfil: () -> Unit
+    onNavigatePerfil: () -> Unit,
+    onNavigateMisPublicaciones: () -> Unit
 ) {
+
     val usuarioDemo = Usuario(
         idUsuario = 1,
         nombre = "Nicole",
@@ -204,9 +208,10 @@ fun PerfilScreen(
                 Spacer(modifier = Modifier.height(22.dp))
 
                 PerfilMenuItem(
-                    icon = Icons.Default.Badge,
+                    icon = Icons.Default.Edit,
                     title = "Editar perfil"
                 ) {
+                    // Aquí luego navegaremos a EditarPerfilScreen
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -215,6 +220,7 @@ fun PerfilScreen(
                     icon = Icons.Default.Inventory2,
                     title = "Mis publicaciones"
                 ) {
+                    onNavigateMisPublicaciones()
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -223,6 +229,7 @@ fun PerfilScreen(
                     icon = Icons.Default.Settings,
                     title = "Cambiar contraseña"
                 ) {
+                    // Aquí luego navegaremos a CambiarPasswordScreen
                 }
 
                 Spacer(modifier = Modifier.height(22.dp))

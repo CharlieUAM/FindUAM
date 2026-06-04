@@ -9,6 +9,7 @@ import ni.edu.uam.finduam.screens.LoginScreen
 import ni.edu.uam.finduam.screens.PublicarScreen
 import ni.edu.uam.finduam.screens.PerfilScreen
 import ni.edu.uam.finduam.screens.RegisterScreen
+import ni.edu.uam.finduam.screens.MisPublicacionesScreen
 
 
 object Routes {
@@ -32,21 +33,24 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Routes.LOGIN
     ) {
+        composable(Routes.MIS_PUBLICACIONES) {
+            MisPublicacionesScreen()
+        }
 
         // Pantalla de inicio de sesión.
         composable(Routes.LOGIN) {
-                LoginScreen(
-                    onLoginSuccess = {
-                        navController.navigate(Routes.HOME) {
-                            popUpTo(Routes.LOGIN) {
-                                inclusive = true
-                            }
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.LOGIN) {
+                            inclusive = true
                         }
-                    },
-                    onRegisterClick = {
-                        navController.navigate(Routes.REGISTER)
                     }
-                )
+                },
+                onRegisterClick = {
+                    navController.navigate(Routes.REGISTER)
+                }
+            )
 
         }
 
@@ -79,6 +83,7 @@ fun AppNavigation() {
         // Pantalla para publicar objeto.
         composable(Routes.PUBLICAR) {
             PublicarScreen(
+
                 onNavigateHome = {
                     navController.navigate(Routes.HOME)
                 },
@@ -87,7 +92,7 @@ fun AppNavigation() {
                 },
                 onNavigatePerfil = {
                     navController.navigate(Routes.PERFIL)
-                }
+                },
             )
         }
 
@@ -109,6 +114,9 @@ fun AppNavigation() {
                 },
                 onNavigatePerfil = {
                     navController.navigate(Routes.PERFIL)
+                },
+                onNavigateMisPublicaciones = {
+                    navController.navigate(Routes.MIS_PUBLICACIONES)
                 }
             )
         }
