@@ -12,6 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ni.edu.uam.finduam.ui.theme.*
+import kotlinx.coroutines.launch
+import ni.edu.uam.finduam.model.UsuarioRequest
+import ni.edu.uam.finduam.network.RetrofitClient
 
 @Composable
 fun RegisterScreen(
@@ -26,6 +29,7 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier
@@ -136,7 +140,30 @@ fun RegisterScreen(
                             return@Button
                         }
 
-                        onRegisterSuccess()
+                        scope.launch {
+
+                            try {
+
+                                val response = RetrofitClient.api.registrarUsuario(
+                                    UsuarioRequest(
+                                        nombre = nombre,
+                                        apellido = apellido,
+                                        correoUam = correo,
+                                        telefono = telefono,
+                                        password = password
+                                    )
+                                )
+
+                                if (response.isSuccessful) {
+                                    onRegisterSuccess()
+                                } else {
+                                    error = "No se pudo registrar."
+                                }
+
+                            } catch (e: Exception) {
+                                error = e.message ?: "Error de conexión"
+                            }
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
