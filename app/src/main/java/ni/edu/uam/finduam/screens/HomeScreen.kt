@@ -419,7 +419,7 @@ fun ObjetoCard(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Publicado por: \${objeto.usuario.nombre} \${objeto.usuario.apellido}",
+                    text = "Publicado por: ${objeto.usuario.nombre} ${objeto.usuario.apellido}",
                     color = UamGrayText,
                     fontSize = 12.sp
                 )
