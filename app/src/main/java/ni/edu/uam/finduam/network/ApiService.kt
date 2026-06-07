@@ -6,6 +6,7 @@ import ni.edu.uam.finduam.model.UsuarioResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import ni.edu.uam.finduam.model.ObjetoRequest
 
 interface ApiService {
 
@@ -18,5 +19,10 @@ interface ApiService {
         suspend fun login(
             @Body request: LoginRequest
         ): Response<UsuarioResponse>
+
+        @POST("api/objetos")
+        suspend fun publicarObjeto(
+        @Body objeto: ObjetoRequest
+        ): Response<ObjetoRequest>
     }
 

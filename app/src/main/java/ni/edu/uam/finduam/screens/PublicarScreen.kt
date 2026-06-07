@@ -64,6 +64,12 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import coil.compose.AsyncImage
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import ni.edu.uam.finduam.network.RetrofitClient
+import ni.edu.uam.finduam.network.SessionManager
+import ni.edu.uam.finduam.model.ObjetoRequest
+import ni.edu.uam.finduam.model.UsuarioIdRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,6 +103,11 @@ fun PublicarScreen(
 
     )
     val context = LocalContext.current
+
+    val sessionManager = SessionManager(context)
+
+    val scope = rememberCoroutineScope()
+
     val calendar = Calendar.getInstance()
 
     val datePickerDialog = DatePickerDialog(
@@ -375,15 +386,58 @@ fun PublicarScreen(
                             categoriaSeleccionada.isBlank() ||
                             ubicacion.isBlank() ||
                             fecha.isBlank() ||
-                            hora.isBlank() ||
-                            imagenUri == null
+                            hora.isBlank()
                         ) {
                             return@Button
                         }
 
-                        println("Objeto publicado")
+                        scope.launch {
 
-                        onNavigateHome()
+                            try {
+
+                                val idCategoria =
+                                    when (categoriaSeleccionada) {
+                                        "Llaves" -> 1
+                                        "Electrónica" -> 2
+                                        "Bolsas y Mochilas" -> 3
+                                        "Documentos" -> 4
+                                        "Accesorios" -> 5
+                                        else -> 1
+                                    }
+
+                                val objeto = ObjetoRequest(
+                                    nombre = nombre,
+                                    descripcion = "Publicado desde Android",
+                                    ubicacion = ubicacion,
+                                    fechaPublicacion = "2026-06-07T12:00:00",
+                                    fotoObjeto = null,
+                                    idCategoria = idCategoria,
+                                    usuario = UsuarioIdRequest(
+                                        sessionManager.obtenerIdUsuario()
+                                    )
+                                )
+
+                                val response =
+                                    RetrofitClient.apiService.publicarObjeto(
+                                        objeto
+                                    )
+
+                                if (response.isSuccessful) {
+
+                                    onNavigateHome()
+
+                                } else {
+
+                                    println(
+                                        "Error al publicar"
+                                    )
+                                }
+
+                            } catch (e: Exception) {
+
+                                e.printStackTrace()
+                            }
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
