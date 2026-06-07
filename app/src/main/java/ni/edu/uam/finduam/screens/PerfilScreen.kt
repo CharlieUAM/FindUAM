@@ -50,6 +50,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.ui.platform.LocalContext
+import ni.edu.uam.finduam.network.SessionManager
 
 @Composable
 fun PerfilScreen(
@@ -60,15 +62,14 @@ fun PerfilScreen(
     onNavigateMisPublicaciones: () -> Unit
 ) {
 
-    val usuarioDemo = Usuario(
-        idUsuario = 1,
-        nombre = "Nicole",
-        apellido = "Pérez García",
-        fotoPerfil = "",
-        correoUam = "nicole@uam.edu.ni",
-        telefono = "85013423",
-        password = "12345678"
-    )
+    val context = LocalContext.current
+
+    val sessionManager = SessionManager(context)
+
+    val nombre = sessionManager.obtenerNombre()
+    val apellido = sessionManager.obtenerApellido()
+    val correo = sessionManager.obtenerCorreo()
+    val telefono = sessionManager.obtenerTelefono()
 
     Scaffold(
         containerColor = UamBackground,
@@ -127,14 +128,14 @@ fun PerfilScreen(
 
                     Column {
                         Text(
-                            text = "${usuarioDemo.nombre} ${usuarioDemo.apellido}",
+                            "$nombre $apellido",
                             color = UamWhite,
                             fontSize = 19.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = usuarioDemo.correoUam,
+                            text = correo,
                             color = UamWhite,
                             fontSize = 13.sp
                         )
@@ -184,7 +185,7 @@ fun PerfilScreen(
                         PerfilInfoRow(
                             icon = Icons.Default.Badge,
                             label = "Nombre completo",
-                            value = "${usuarioDemo.nombre} ${usuarioDemo.apellido}"
+                            value = "$nombre $apellido"
                         )
 
                         Spacer(modifier = Modifier.height(18.dp))
@@ -192,7 +193,7 @@ fun PerfilScreen(
                         PerfilInfoRow(
                             icon = Icons.Default.Phone,
                             label = "Teléfono",
-                            value = usuarioDemo.telefono
+                            value = telefono
                         )
 
                         Spacer(modifier = Modifier.height(18.dp))
@@ -200,7 +201,7 @@ fun PerfilScreen(
                         PerfilInfoRow(
                             icon = Icons.Default.Email,
                             label = "Correo UAM",
-                            value = usuarioDemo.correoUam
+                            value = correo
                         )
                     }
                 }
@@ -235,7 +236,12 @@ fun PerfilScreen(
                 Spacer(modifier = Modifier.height(22.dp))
 
                 Button(
-                    onClick = onCerrarSesion,
+                    onClick = {
+
+                        sessionManager.cerrarSesion()
+
+                        onCerrarSesion()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
