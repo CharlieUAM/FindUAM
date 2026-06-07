@@ -58,6 +58,11 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
 import java.time.LocalDateTime
 import androidx.compose.foundation.clickable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import ni.edu.uam.finduam.network.RetrofitClient
+import ni.edu.uam.finduam.model.ObjetoResponse
 
 @Composable
 fun HomeScreen(
@@ -71,8 +76,29 @@ fun HomeScreen(
     var categoriaSeleccionada by remember {
         mutableStateOf("Todos")
     }
+    var objetosApi by remember {
+        mutableStateOf<List<ObjetoResponse>>(emptyList())
+    }
+    LaunchedEffect(Unit) {
 
-    val usuarioDemo = Usuario(
+        try {
+
+            val response =
+                RetrofitClient.apiService.obtenerObjetos()
+
+            if (response.isSuccessful) {
+
+                objetosApi =
+                    response.body() ?: emptyList()
+            }
+
+        } catch (e: Exception) {
+
+            e.printStackTrace()
+        }
+    }
+
+   /* val usuarioDemo = Usuario(
         idUsuario = 1,
         nombre = "Nicole",
         apellido = "Pérez García",
@@ -115,21 +141,22 @@ fun HomeScreen(
             publicadoPor = usuarioDemo
         )
     )
-
+*/
     val objetosFiltrados = when (categoriaSeleccionada) {
-        "Llaves" -> objetosPublicados.filter {
-            it.categoria.nombre == "Llaves"
+
+        "Llaves" -> objetosApi.filter {
+            it.idCategoria == 1
         }
 
-        "Electrónica" -> objetosPublicados.filter {
-            it.categoria.nombre == "Electrónica"
+        "Electrónica" -> objetosApi.filter {
+            it.idCategoria == 2
         }
 
-        "Bolsas" -> objetosPublicados.filter {
-            it.categoria.nombre == "Bolsas y Mochilas"
+        "Bolsas" -> objetosApi.filter {
+            it.idCategoria == 3
         }
 
-        else -> objetosPublicados
+        else -> objetosApi
     }
 
     Scaffold(
@@ -290,7 +317,7 @@ fun CategoriaChip(
 }
 @Composable
 fun ObjetoCard(
-    objeto: Objeto
+    objeto: ObjetoResponse
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -325,7 +352,14 @@ fun ObjetoCard(
                     shape = RoundedCornerShape(50.dp)
                 ) {
                     Text(
-                        text = objeto.categoria.nombre,
+                        text = when (objeto.idCategoria) {
+                            1 -> "Llaves"
+                            2 -> "Electrónica"
+                            3 -> "Bolsas"
+                            4 -> "Documentos"
+                            5 -> "Accesorios"
+                            else -> "Otros"
+                        },
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         color = UamWhite,
                         fontSize = 11.sp,
@@ -376,7 +410,7 @@ fun ObjetoCard(
                     )
 
                     Text(
-                        text = obtenerHora(objeto.fechaHora),
+                        text = objeto.fechaPublicacion,
                         color = UamGrayText,
                         fontSize = 13.sp
                     )
@@ -385,7 +419,7 @@ fun ObjetoCard(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Publicado por: ${objeto.publicadoPor.nombre} ${objeto.publicadoPor.apellido}",
+                    text = "Publicado por: \${objeto.usuario.nombre} \${objeto.usuario.apellido}",
                     color = UamGrayText,
                     fontSize = 12.sp
                 )
