@@ -55,6 +55,10 @@ import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
 import ni.edu.uam.finduam.ui.theme.UamWhite
 import androidx.compose.material3.TextButton
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import ni.edu.uam.finduam.network.RetrofitClient
+import ni.edu.uam.finduam.model.LoginRequest
 
 @Composable
 fun LoginScreen(
@@ -76,6 +80,7 @@ fun LoginScreen(
     var errorMessage by remember {
         mutableStateOf("")
     }
+    val scope = rememberCoroutineScope()
 
     val usuarioDemo = Usuario(
         idUsuario = 1,
@@ -251,20 +256,39 @@ fun LoginScreen(
 
                     Button(
                         onClick = {
+
                             if (correoUam.isBlank() || password.isBlank()) {
                                 errorMessage = "Completa tu correo UAM y contraseña."
                                 return@Button
                             }
 
-                            val loginCorrecto = usuarioDemo.iniciarSesion(
-                                correoIngresado = correoUam,
-                                passwordIngresado = password
-                            )
+                            scope.launch {
 
-                            if (loginCorrecto) {
-                                onLoginSuccess()
-                            } else {
-                                errorMessage = "Correo o contraseña incorrectos."
+                                try {
+
+                                    val response =
+                                        RetrofitClient.apiService.login(
+                                            LoginRequest(
+                                                correoUam = correoUam,
+                                                password = password
+                                            )
+                                        )
+
+                                    if (response.isSuccessful) {
+
+                                        onLoginSuccess()
+
+                                    } else {
+
+                                        errorMessage =
+                                            "Correo o contraseña incorrectos."
+                                    }
+
+                                } catch (e: Exception) {
+
+                                    errorMessage =
+                                        "Error de conexión con el servidor."
+                                }
                             }
                         },
                         modifier = Modifier
