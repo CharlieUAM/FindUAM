@@ -144,7 +144,7 @@ fun RegisterScreen(
 
                             try {
 
-                                val response = RetrofitClient.api.registrarUsuario(
+                                val response = RetrofitClient.apiService.registrarUsuario(
                                     UsuarioRequest(
                                         nombre = nombre,
                                         apellido = apellido,
