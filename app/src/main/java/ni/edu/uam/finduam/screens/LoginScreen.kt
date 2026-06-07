@@ -59,6 +59,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
 import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.model.LoginRequest
+import ni.edu.uam.finduam.network.SessionManager
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun LoginScreen(
@@ -81,6 +83,8 @@ fun LoginScreen(
         mutableStateOf("")
     }
     val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
 
     val usuarioDemo = Usuario(
         idUsuario = 1,
@@ -276,7 +280,23 @@ fun LoginScreen(
 
                                     if (response.isSuccessful) {
 
-                                        onLoginSuccess()
+                                        val usuario = response.body()
+
+                                        if (usuario != null) {
+
+                                            val sessionManager =
+                                                SessionManager(context)
+
+                                            sessionManager.guardarUsuario(
+                                                idUsuario = usuario.idUsuario,
+                                                nombre = usuario.nombre,
+                                                apellido = usuario.apellido,
+                                                correoUam = usuario.correoUam,
+                                                telefono = usuario.telefono
+                                            )
+
+                                            onLoginSuccess()
+                                        }
 
                                     } else {
 
