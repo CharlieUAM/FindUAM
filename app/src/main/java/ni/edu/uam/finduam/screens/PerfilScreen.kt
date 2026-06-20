@@ -52,6 +52,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.platform.LocalContext
 import ni.edu.uam.finduam.network.SessionManager
+import androidx.compose.material3.Text
 
 @Composable
 fun PerfilScreen(
@@ -116,11 +117,11 @@ fun PerfilScreen(
                             .background(UamWhite),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Image,
-                            contentDescription = "Foto de perfil",
-                            tint = UamTurquoiseDark,
-                            modifier = Modifier.size(38.dp)
+                        Text(
+                            text = nombre.take(1),
+                            color = UamTurquoiseDark,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
 
@@ -145,16 +146,40 @@ fun PerfilScreen(
                             color = UamWhite,
                             fontSize = 12.sp
                         )
+
+                        Text(
+                            text = "Ayudando a recuperar objetos perdidos",
+                            color = UamWhite,
+                            fontSize = 11.sp
+                        )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                PerfilStatCard(
-                    title = "Objetos publicados",
-                    value = "0",
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
-                )
+                ) {
+
+                    PerfilStatCard(
+                        title = "Publicados",
+                        value = "12",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    PerfilStatCard(
+                        title = "Hallados",
+                        value = "4",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    PerfilStatCard(
+                        title = "Activos",
+                        value = "8",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
 
             Column(
