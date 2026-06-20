@@ -193,7 +193,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "👋 Bienvenido",
+                    text = "Bienvenido",
                     color = UamWhite,
                     fontSize = 14.sp
                 )

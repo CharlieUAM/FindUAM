@@ -112,7 +112,7 @@ fun PerfilScreen(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(76.dp)
+                            .size(90.dp)
                             .clip(CircleShape)
                             .background(UamWhite),
                         contentAlignment = Alignment.Center
@@ -120,7 +120,7 @@ fun PerfilScreen(
                         Text(
                             text = nombre.take(1),
                             color = UamTurquoiseDark,
-                            fontSize = 30.sp,
+                            fontSize = 38.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -303,7 +303,10 @@ fun PerfilStatCard(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = UamTurquoiseDark
+            containerColor = UamWhite
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
         )
     ) {
         Column(
@@ -314,14 +317,14 @@ fun PerfilStatCard(
         ) {
             Text(
                 text = value,
-                color = UamWhite,
+                color = UamTurquoiseDark,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 text = title,
-                color = UamWhite,
+                color = UamTurquoiseDark,
                 fontSize = 12.sp
             )
         }
