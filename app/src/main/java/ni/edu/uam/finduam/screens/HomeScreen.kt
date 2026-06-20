@@ -190,6 +190,20 @@ fun HomeScreen(
                     fontWeight = FontWeight.Bold
                 )
 
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "👋 Bienvenido",
+                    color = UamWhite,
+                    fontSize = 14.sp
+                )
+
+                Text(
+                    text = "¿Qué objeto estás buscando hoy?",
+                    color = UamWhite,
+                    fontSize = 12.sp
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextField(
