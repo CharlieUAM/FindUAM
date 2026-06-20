@@ -53,6 +53,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.platform.LocalContext
 import ni.edu.uam.finduam.network.SessionManager
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.ArrowForward
 
 @Composable
 fun PerfilScreen(
@@ -287,6 +288,7 @@ fun PerfilScreen(
                         text = "Cerrar sesión",
                         fontWeight = FontWeight.Bold
                     )
+
                 }
             }
         }
@@ -400,6 +402,14 @@ fun PerfilMenuItem(
                 text = title,
                 color = UamDarkText,
                 fontWeight = FontWeight.SemiBold
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                imageVector = Icons.Default.ArrowForward,
+                contentDescription = "Ir",
+                tint = UamGrayText
             )
         }
     }
