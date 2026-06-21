@@ -25,15 +25,53 @@ import ni.edu.uam.finduam.ui.theme.UamBackground
 import ni.edu.uam.finduam.ui.theme.UamDarkText
 import ni.edu.uam.finduam.ui.theme.UamTurquoise
 import ni.edu.uam.finduam.ui.theme.UamWhite
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import ni.edu.uam.finduam.network.RetrofitClient
+import ni.edu.uam.finduam.network.SessionManager
+import ni.edu.uam.finduam.model.ObjetoResponse
 
 @Composable
 fun MisPublicacionesScreen() {
 
-    val publicaciones = listOf(
-        "Llaves con llavero azul",
-        "Mochila negra Nike",
-        "AirPods Pro"
-    )
+    val context = LocalContext.current
+
+    val sessionManager = remember {
+        SessionManager(context)
+    }
+
+    val idUsuario = sessionManager.obtenerIdUsuario()
+
+    var misPublicaciones by remember {
+        mutableStateOf<List<ObjetoResponse>>(emptyList())
+    }
+
+    LaunchedEffect(Unit) {
+
+        try {
+
+            val response =
+                RetrofitClient.apiService.obtenerObjetos()
+
+            if (response.isSuccessful) {
+
+                misPublicaciones =
+                    response.body()
+                        ?.filter {
+                            it.usuario.idUsuario == idUsuario
+                        }
+                        ?: emptyList()
+            }
+
+        } catch (e: Exception) {
+
+            e.printStackTrace()
+        }
+    }
 
     Scaffold(
         containerColor = UamBackground
@@ -56,7 +94,7 @@ fun MisPublicacionesScreen() {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
-                items(publicaciones) { objeto ->
+                items(misPublicaciones) { objeto ->
 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -75,8 +113,19 @@ fun MisPublicacionesScreen() {
                             )
 
                             Text(
-                                text = objeto,
-                                color = UamDarkText
+                                text = objeto.nombre,
+                                color = UamDarkText,
+                                fontWeight = FontWeight.SemiBold
+                            )
+
+                            Text(
+                                text = objeto.ubicacion,
+                                fontSize = 12.sp
+                            )
+
+                            Text(
+                                text = objeto.fechaPublicacion.substring(0,10),
+                                fontSize = 12.sp
                             )
 
                             Button(
