@@ -142,6 +142,14 @@ fun HomeScreen(
         )
     )
 */
+
+    val totalPublicaciones = objetosApi.size
+
+    val totalCategorias = objetosApi
+        .map { it.idCategoria }
+        .distinct()
+        .size
+
     val objetosFiltrados = when (categoriaSeleccionada) {
 
         "Llaves" -> objetosApi.filter {
@@ -195,7 +203,8 @@ fun HomeScreen(
                 Text(
                     text = "Bienvenido",
                     color = UamWhite,
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
 
                 Text(
@@ -248,6 +257,68 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+
+                        Card(
+                            modifier = Modifier.weight(1f),
+                            colors = CardDefaults.cardColors(
+                                containerColor = UamWhite
+                            ),
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 4.dp
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(12.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = totalPublicaciones.toString(),
+                                    fontSize = 22.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = UamTurquoiseDark
+                                )
+
+                                Text(
+                                    text = "Publicados",
+                                    color = UamGrayText
+                                )
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier.weight(1f),
+                            colors = CardDefaults.cardColors(
+                                containerColor = UamWhite
+                            ),
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 4.dp
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(12.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = totalCategorias.toString(),
+                                    fontSize = 22.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = UamTurquoiseDark
+                                )
+
+                                Text(
+                                    text = "Categorías",
+                                    color = UamGrayText
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         CategoriaChip(
@@ -286,7 +357,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "${objetosFiltrados.size} objetos encontrados",
+                        text = "${objetosFiltrados.size} publicaciones disponibles",
                         color = UamGrayText,
                         fontSize = 13.sp
                     )
@@ -340,7 +411,7 @@ fun ObjetoCard(
             containerColor = UamWhite
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 8.dp
         )
     ) {
         Column {
@@ -351,12 +422,24 @@ fun ObjetoCard(
                     .background(UamTurquoiseLight),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Inventory2,
-                    contentDescription = "Foto del objeto",
-                    tint = UamTurquoiseDark,
-                    modifier = Modifier.size(48.dp)
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Inventory2,
+                        contentDescription = "Foto del objeto",
+                        tint = UamTurquoiseDark,
+                        modifier = Modifier.size(60.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Sin fotografía",
+                        color = UamGrayText,
+                        fontSize = 12.sp
+                    )
+                }
 
                 Surface(
                     modifier = Modifier
@@ -392,6 +475,16 @@ fun ObjetoCard(
                     fontWeight = FontWeight.SemiBold
                 )
 
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = objeto.descripcion,
+                    color = UamGrayText,
+                    fontSize = 13.sp
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
@@ -424,7 +517,7 @@ fun ObjetoCard(
                     )
 
                     Text(
-                        text = objeto.fechaPublicacion,
+                        text = objeto.fechaPublicacion.substring(0,10),
                         color = UamGrayText,
                         fontSize = 13.sp
                     )
