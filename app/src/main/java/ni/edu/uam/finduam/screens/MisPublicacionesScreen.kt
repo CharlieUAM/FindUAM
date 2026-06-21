@@ -93,6 +93,33 @@ fun MisPublicacionesScreen() {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                if (misPublicaciones.isEmpty()) {
+
+                    item {
+
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = UamWhite
+                            )
+                        ) {
+
+                            Column(
+                                modifier = Modifier.padding(20.dp)
+                            ) {
+
+                                Text(
+                                    text = "Aún no has publicado objetos",
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                Text(
+                                    text = "Cuando publiques un objeto aparecerá aquí."
+                                )
+                            }
+                        }
+                    }
+                }
 
                 items(misPublicaciones) { objeto ->
 
