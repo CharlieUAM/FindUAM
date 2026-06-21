@@ -221,18 +221,8 @@ fun PublicarScreen(
                             fontSize = 13.sp
                         )
 
-
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(
-                            text =
-                                if (imagenUri == null)
-                                    "Toca para añadir foto"
-                                else
-                                    "Foto seleccionada ✓",
-                            color = UamGrayText,
-                            fontSize = 13.sp
-                        )
                     }
                 }
 
