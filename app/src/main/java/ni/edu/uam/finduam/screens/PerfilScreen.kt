@@ -61,7 +61,8 @@ fun PerfilScreen(
     onNavigateHome: () -> Unit,
     onNavigatePublicar: () -> Unit,
     onNavigatePerfil: () -> Unit,
-    onNavigateMisPublicaciones: () -> Unit
+    onNavigateMisPublicaciones: () -> Unit,
+    onNavigateAjustes: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -234,14 +235,7 @@ fun PerfilScreen(
 
                 Spacer(modifier = Modifier.height(22.dp))
 
-                PerfilMenuItem(
-                    icon = Icons.Default.Edit,
-                    title = "Editar perfil"
-                ) {
-                    // Aquí luego navegaremos a EditarPerfilScreen
-                }
 
-                Spacer(modifier = Modifier.height(8.dp))
 
                 PerfilMenuItem(
                     icon = Icons.Default.Inventory2,
@@ -251,6 +245,13 @@ fun PerfilScreen(
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
+
+                PerfilMenuItem(
+                    icon = Icons.Default.Settings,
+                    title = "Ajustes"
+                ) {
+                    onNavigateAjustes()
+                }
 
                 PerfilMenuItem(
                     icon = Icons.Default.Settings,
