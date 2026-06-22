@@ -34,8 +34,6 @@ FindUAM propone una solución digital mediante una aplicación móvil donde los 
 * Kotlin
 * Jetpack Compose
 * Retrofit
-* Gson Converter
-* Room Database
 * Android Studio
 
 ### Backend / API REST
@@ -50,21 +48,6 @@ FindUAM propone una solución digital mediante una aplicación móvil donde los 
 
 * PostgreSQL
 * pgAdmin
-
----
-
-## Estructura general del sistema
-
-El proyecto está dividido en dos partes principales:
-
-### Aplicación Android
-
-La aplicación móvil contiene las pantallas principales del sistema, modelos, navegación, componentes reutilizables y conexión con la API REST mediante Retrofit.
-
-### API REST
-
-El backend desarrollado en Spring Boot permite gestionar los datos principales del sistema, como usuarios y objetos publicados. Esta API se conecta a una base de datos PostgreSQL administrada desde pgAdmin.
-
 
 ## Enlaces del proyecto
 
