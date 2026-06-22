@@ -189,7 +189,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(UamTurquoise)
-                    .padding(start = 20.dp, end = 20.dp, top = 42.dp, bottom = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp, top = 40.dp, bottom = 20.dp)
             ) {
                 Text(
                     text = "FindUAM",
@@ -480,10 +480,9 @@ fun ObjetoCard(
                 Text(
                     text = objeto.descripcion,
                     color = UamGrayText,
-                    fontSize = 13.sp
+                    fontSize = 13.sp,
+                    maxLines = 2
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 Spacer(modifier = Modifier.height(8.dp))
 
