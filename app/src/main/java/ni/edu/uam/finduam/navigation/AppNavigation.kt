@@ -144,7 +144,11 @@ fun AppNavigation() {
             )
         }
         composable(Routes.EDITAR_PERFIL) {
-            EditarPerfilScreen()
+            EditarPerfilScreen(
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
         }
 
     }
