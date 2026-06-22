@@ -70,6 +70,7 @@ import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.network.SessionManager
 import ni.edu.uam.finduam.model.ObjetoRequest
 import ni.edu.uam.finduam.model.UsuarioIdRequest
+import androidx.compose.material.icons.filled.Inventory2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,6 +81,7 @@ fun PublicarScreen(
 ) {
     var nombre by remember { mutableStateOf("") }
     var ubicacion by remember { mutableStateOf("") }
+    var descripcion by remember { mutableStateOf("") }
     var fecha by remember { mutableStateOf("") }
     var hora by remember { mutableStateOf("") }
     var categoriaSeleccionada by remember { mutableStateOf("") }
@@ -200,9 +202,36 @@ fun PublicarScreen(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    if (imagenUri != null) {
+
+                        AsyncImage(
+                            model = imagenUri,
+                            contentDescription = "Foto seleccionada",
+                            modifier = Modifier.fillMaxSize()
+                        )
+
+                    } else {
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                            Icon(
+                                imageVector = Icons.Default.AddAPhoto,
+                                contentDescription = "Agregar foto",
+                                tint = UamTurquoiseDark,
+                                modifier = Modifier.size(34.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = "Toca para añadir foto",
+                                color = UamGrayText,
+                                fontSize = 13.sp
+                            )
+                        }
+                    }
                         Icon(
                             imageVector = Icons.Default.AddAPhoto,
                             contentDescription = "Agregar foto",
@@ -234,6 +263,16 @@ fun PublicarScreen(
                     onValueChange = { nombre = it },
                     placeholder = "Ej: Mochila negra Nike",
                     icon = Icons.Default.Title
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                CampoTextoFindUAM(
+                    label = "Descripción *",
+                    value = descripcion,
+                    onValueChange = { descripcion = it },
+                    placeholder = "Describe el objeto encontrado",
+                    icon = Icons.Default.Inventory2
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -373,6 +412,7 @@ fun PublicarScreen(
 
                         if (
                             nombre.isBlank() ||
+                            descripcion.isBlank() ||
                             categoriaSeleccionada.isBlank() ||
                             ubicacion.isBlank() ||
                             fecha.isBlank() ||
@@ -397,7 +437,7 @@ fun PublicarScreen(
 
                                 val objeto = ObjetoRequest(
                                     nombre = nombre,
-                                    descripcion = "Publicado desde Android",
+                                    descripcion = descripcion,
                                     ubicacion = ubicacion,
                                     fechaPublicacion = "2026-06-07T12:00:00",
                                     fotoObjeto = null,
@@ -447,4 +487,3 @@ fun PublicarScreen(
             }
         }
     }
-}
