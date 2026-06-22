@@ -11,6 +11,7 @@ import ni.edu.uam.finduam.screens.PerfilScreen
 import ni.edu.uam.finduam.screens.RegisterScreen
 import ni.edu.uam.finduam.screens.MisPublicacionesScreen
 import ni.edu.uam.finduam.screens.AjustesScreen
+import ni.edu.uam.finduam.screens.EditarPerfilScreen
 
 object Routes {
     const val LOGIN = "login"
@@ -20,6 +21,7 @@ object Routes {
     const val REGISTER = "register"
     const val MIS_PUBLICACIONES = "mis_publicaciones"
     const val AJUSTES = "ajustes"
+    const val EDITAR_PERFIL = "editar_perfil"
 }
 
 // Función principal que controla la navegación entre pantallas.
@@ -133,13 +135,16 @@ fun AppNavigation() {
                 },
 
                 onEditarPerfil = {
-                    // luego navegaremos a EditarPerfilScreen
+                    navController.navigate(Routes.EDITAR_PERFIL)
                 },
 
                 onCambiarPassword = {
                     // luego navegaremos a CambiarPasswordScreen
                 }
             )
+        }
+        composable(Routes.EDITAR_PERFIL) {
+            EditarPerfilScreen()
         }
 
     }
