@@ -253,6 +253,8 @@ fun PerfilScreen(
                     onNavigateAjustes()
                 }
 
+                Spacer(modifier = Modifier.height(22.dp))
+
                 Button(
                     onClick = {
 
