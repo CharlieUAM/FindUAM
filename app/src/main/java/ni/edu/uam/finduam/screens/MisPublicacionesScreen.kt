@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.network.SessionManager
 import ni.edu.uam.finduam.model.ObjetoResponse
+import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
 
 @Composable
 fun MisPublicacionesScreen() {
@@ -88,6 +89,11 @@ fun MisPublicacionesScreen() {
                 text = "Mis Publicaciones",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "${misPublicaciones.size} publicaciones",
+                color = UamTurquoiseDark,
+                fontWeight = FontWeight.SemiBold
             )
 
             LazyColumn(
