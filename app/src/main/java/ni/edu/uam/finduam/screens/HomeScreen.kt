@@ -63,6 +63,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.model.ObjetoResponse
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalContext
+import ni.edu.uam.finduam.network.SessionManager
+import androidx.compose.foundation.lazy.LazyRow
 
 @Composable
 fun HomeScreen(
@@ -70,6 +76,10 @@ fun HomeScreen(
     onNavigatePublicar: () -> Unit,
     onNavigatePerfil: () -> Unit
 ) {
+    val context = LocalContext.current
+
+    val sessionManager = SessionManager(context)
+
     var textoBusqueda by remember {
         mutableStateOf("")
     }
@@ -284,55 +294,67 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Row(
+                    LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CategoriaChip(
-                            text = "Todos",
-                            selected = categoriaSeleccionada == "Todos",
-                            onClick = {
-                                categoriaSeleccionada = "Todos"
-                            }
-                        )
+                        item {
+                            CategoriaChip(
+                                text = "Todos",
+                                selected = categoriaSeleccionada == "Todos",
+                                onClick = {
+                                    categoriaSeleccionada = "Todos"
+                                }
+                            )
+                        }
 
-                        CategoriaChip(
-                            text = "Bolsas",
-                            selected = categoriaSeleccionada == "Bolsas",
-                            onClick = {
-                                categoriaSeleccionada = "Bolsas"
-                            }
-                        )
+                        item {
+                            CategoriaChip(
+                                text = "Bolsas",
+                                selected = categoriaSeleccionada == "Bolsas",
+                                onClick = {
+                                    categoriaSeleccionada = "Bolsas"
+                                }
+                            )
+                        }
 
-                        CategoriaChip(
-                            text = "Llaves",
-                            selected = categoriaSeleccionada == "Llaves",
-                            onClick = {
-                                categoriaSeleccionada = "Llaves"
-                            }
-                        )
+                        item {
+                            CategoriaChip(
+                                text = "Llaves",
+                                selected = categoriaSeleccionada == "Llaves",
+                                onClick = {
+                                    categoriaSeleccionada = "Llaves"
+                                }
+                            )
+                        }
 
-                        CategoriaChip(
-                            text = "Electrónica",
-                            selected = categoriaSeleccionada == "Electrónica",
-                            onClick = {
-                                categoriaSeleccionada = "Electrónica"
-                            }
-                        )
-                        CategoriaChip(
-                            text = "Documentos",
-                            selected = categoriaSeleccionada == "Documentos",
-                            onClick = {
-                                categoriaSeleccionada = "Documentos"
-                            }
-                        )
+                        item {
+                            CategoriaChip(
+                                text = "Electrónica",
+                                selected = categoriaSeleccionada == "Electrónica",
+                                onClick = {
+                                    categoriaSeleccionada = "Electrónica"
+                                }
+                            )
+                        }
+                        item {
+                            CategoriaChip(
+                                text = "Documentos",
+                                selected = categoriaSeleccionada == "Documentos",
+                                onClick = {
+                                    categoriaSeleccionada = "Documentos"
+                                }
+                            )
+                        }
 
-                        CategoriaChip(
-                            text = "Accesorios",
-                            selected = categoriaSeleccionada == "Accesorios",
-                            onClick = {
-                                categoriaSeleccionada = "Accesorios"
-                            }
-                        )
+                        item {
+                            CategoriaChip(
+                                text = "Accesorios",
+                                selected = categoriaSeleccionada == "Accesorios",
+                                onClick = {
+                                    categoriaSeleccionada = "Accesorios"
+                                }
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -345,7 +367,10 @@ fun HomeScreen(
                 }
 
                 items(objetosFiltrados) { objeto ->
-                    ObjetoCard(objeto = objeto)
+                    ObjetoCard(
+                        objeto = objeto,
+                        usuarioLogueado = sessionManager.obtenerIdUsuario()
+                    )
                 }
 
                 item {
@@ -383,8 +408,11 @@ fun CategoriaChip(
 }
 @Composable
 fun ObjetoCard(
-    objeto: ObjetoResponse
+    objeto: ObjetoResponse,
+    usuarioLogueado: Int
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
@@ -513,18 +541,34 @@ fun ObjetoCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Button(
-                    onClick = {
-                        // Más adelante aquí se abrirá WhatsApp con objeto.contactarPorWhatsapp().
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = UamTurquoise,
-                        contentColor = UamWhite
-                    )
-                ) {
-                    Text(text = "Solicitar")
+                if (objeto.usuario.idUsuario != usuarioLogueado) {
+
+                    Button(
+                        onClick = {
+
+                            val telefono = "505${objeto.usuario.telefono}"
+
+                            val mensaje =
+                                "Hola, vi tu publicación sobre '${objeto.nombre}' en FindUAM y me gustaría obtener más información."
+
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(
+                                    "https://wa.me/$telefono?text=${Uri.encode(mensaje)}"
+                                )
+                            )
+
+                            context.startActivity(intent)
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = UamTurquoise,
+                            contentColor = UamWhite
+                        )
+                    ) {
+                        Text("Solicitar")
+                    }
                 }
             }
         }
