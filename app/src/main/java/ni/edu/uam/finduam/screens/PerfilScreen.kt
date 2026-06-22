@@ -253,15 +253,6 @@ fun PerfilScreen(
                     onNavigateAjustes()
                 }
 
-                PerfilMenuItem(
-                    icon = Icons.Default.Settings,
-                    title = "Cambiar contraseña"
-                ) {
-                    // Aquí luego navegaremos a CambiarPasswordScreen
-                }
-
-                Spacer(modifier = Modifier.height(22.dp))
-
                 Button(
                     onClick = {
 
