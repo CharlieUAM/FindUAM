@@ -23,6 +23,7 @@ FindUAM propone una solución digital mediante una aplicación móvil donde los 
 * Búsqueda de objetos por nombre.
 * Espacios de categorías para organizar los objetos.
 * Publicación de objetos encontrados.
+* Solicitar objeto encontrado
 * Edición de perfil del usuario.
 
 ---
