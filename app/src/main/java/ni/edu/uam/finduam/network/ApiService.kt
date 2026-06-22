@@ -32,21 +32,21 @@ interface ApiService {
 
     // Endpoints para Publicaciones (Objetos)
     @GET("api/publicaciones")
-    suspend fun obtenerPublicaciones(): Response<List<ObjetoResponse>>
+    suspend fun obtenerPublicaciones(): Response<List<Publicacion>>
 
     @GET("api/publicaciones/{id}")
-    suspend fun obtenerPublicacionPorId(@Path("id") id: Long): Response<ObjetoResponse>
+    suspend fun obtenerPublicacionPorId(@Path("id") id: Long): Response<Publicacion>
 
     @POST("api/publicaciones")
     suspend fun publicarObjeto(
         @Body objeto: ObjetoRequest
-    ): Response<ObjetoResponse>
+    ): Response<Publicacion>
 
     @PUT("api/publicaciones/{id}")
     suspend fun actualizarPublicacion(
         @Path("id") id: Long,
         @Body objeto: ObjetoRequest
-    ): Response<ObjetoResponse>
+    ): Response<Publicacion>
 
     @DELETE("api/publicaciones/{id}")
     suspend fun eliminarPublicacion(@Path("id") id: Long): Response<Unit>

@@ -1,68 +1,28 @@
 package ni.edu.uam.finduam.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ni.edu.uam.finduam.model.Categoria
-import ni.edu.uam.finduam.model.Objeto
-import ni.edu.uam.finduam.model.Usuario
-import ni.edu.uam.finduam.ui.theme.UamBackground
-import ni.edu.uam.finduam.ui.theme.UamDarkText
-import ni.edu.uam.finduam.ui.theme.UamGrayText
-import ni.edu.uam.finduam.ui.theme.UamTurquoise
-import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
-import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
-import ni.edu.uam.finduam.ui.theme.UamWhite
-import java.time.LocalDateTime
-import androidx.compose.foundation.clickable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
+import coil.compose.AsyncImage
+import ni.edu.uam.finduam.model.Publicacion
 import ni.edu.uam.finduam.network.RetrofitClient
-import ni.edu.uam.finduam.model.ObjetoResponse
+import ni.edu.uam.finduam.ui.theme.*
 
 @Composable
 fun HomeScreen(
@@ -70,101 +30,34 @@ fun HomeScreen(
     onNavigatePublicar: () -> Unit,
     onNavigatePerfil: () -> Unit
 ) {
-    var textoBusqueda by remember {
-        mutableStateOf("")
-    }
-    var categoriaSeleccionada by remember {
-        mutableStateOf("Todos")
-    }
-    var objetosApi by remember {
-        mutableStateOf<List<ObjetoResponse>>(emptyList())
-    }
+    var textoBusqueda by remember { mutableStateOf("") }
+    var categoriaSeleccionada by remember { mutableStateOf("Todos") }
+    var objetosApi by remember { mutableStateOf<List<Publicacion>>(emptyList()) }
+
     LaunchedEffect(Unit) {
-
         try {
-
-            val response =
-                RetrofitClient.apiService.obtenerPublicaciones()
-
+            val response = RetrofitClient.apiService.obtenerPublicaciones()
             if (response.isSuccessful) {
-
-                objetosApi =
-                    response.body() ?: emptyList()
+                objetosApi = response.body() ?: emptyList()
             }
-
         } catch (e: Exception) {
-
             e.printStackTrace()
         }
     }
 
-   /* val usuarioDemo = Usuario(
-        idUsuario = 1,
-        nombre = "Nicole",
-        apellido = "Pérez García",
-        fotoPerfil = "",
-        correoUam = "nicole@uam.edu.ni",
-        telefono = "60000000",
-        password = "12345678"
-    )
-
-    val categoriaLlaves = Categoria(1, "Llaves")
-    val categoriaElectronica = Categoria(2, "Electrónica")
-    val categoriaMochilas = Categoria(3, "Bolsas y Mochilas")
-
-    val objetosPublicados = listOf(
-        Objeto(
-            idObjeto = 1,
-            nombre = "Llaves con llavero azul UAM",
-            fotoObjeto = "",
-            ubicacion = "Cafetería Campus",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 11, 15),
-            categoria = categoriaLlaves,
-            publicadoPor = usuarioDemo
-        ),
-        Objeto(
-            idObjeto = 2,
-            nombre = "AirPods Pro blancos",
-            fotoObjeto = "",
-            ubicacion = "Facultad de Ciencias, Aula 201",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 9, 45),
-            categoria = categoriaElectronica,
-            publicadoPor = usuarioDemo
-        ),
-        Objeto(
-            idObjeto = 3,
-            nombre = "Mochila negra Nike",
-            fotoObjeto = "",
-            ubicacion = "Edificio M, segundo piso",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 8, 30),
-            categoria = categoriaMochilas,
-            publicadoPor = usuarioDemo
-        )
-    )
-*/
-
     val totalPublicaciones = objetosApi.size
+    val totalCategorias = objetosApi.mapNotNull { it.objeto?.categoria }.distinct().size
 
-    val totalCategorias = objetosApi
-        .map { it.idCategoria }
-        .distinct()
-        .size
-
-    val objetosFiltrados = when (categoriaSeleccionada) {
-
-        "Llaves" -> objetosApi.filter {
-            it.idCategoria == 1
+    val objetosFiltrados = objetosApi.filter { pub ->
+        val obj = pub.objeto
+        val matchesBusqueda = (obj?.nombre?.contains(textoBusqueda, ignoreCase = true) ?: false) ||
+                (obj?.descripcion?.contains(textoBusqueda, ignoreCase = true) ?: false)
+        
+        val matchesCategoria = when (categoriaSeleccionada) {
+            "Todos" -> true
+            else -> obj?.categoria == categoriaSeleccionada
         }
-
-        "Electrónica" -> objetosApi.filter {
-            it.idCategoria == 2
-        }
-
-        "Bolsas" -> objetosApi.filter {
-            it.idCategoria == 3
-        }
-
-        else -> objetosApi
+        matchesBusqueda && matchesCategoria
     }
 
     Scaffold(
@@ -178,13 +71,13 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .background(UamBackground)
         ) {
+            // Header
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -197,45 +90,27 @@ fun HomeScreen(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
-
                 Spacer(modifier = Modifier.height(6.dp))
-
                 Text(
                     text = "Bienvenido",
                     color = UamWhite,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-
                 Text(
                     text = "¿Qué objeto estás buscando hoy?",
                     color = UamWhite,
                     fontSize = 12.sp
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
-
                 TextField(
                     value = textoBusqueda,
-                    onValueChange = {
-                        textoBusqueda = it
-                    },
+                    onValueChange = { textoBusqueda = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(54.dp),
-                    placeholder = {
-                        Text(
-                            text = "Buscar objetos perdidos...",
-                            color = UamGrayText
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Buscar",
-                            tint = UamGrayText
-                        )
-                    },
+                    placeholder = { Text(text = "Buscar objetos perdidos...", color = UamGrayText) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Buscar", tint = UamGrayText) },
                     singleLine = true,
                     shape = RoundedCornerShape(28.dp),
                     colors = TextFieldDefaults.colors(
@@ -255,88 +130,142 @@ fun HomeScreen(
             ) {
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
-
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-
-                        Card(
-                            modifier = Modifier.weight(1f),
-                            colors = CardDefaults.cardColors(
-                                containerColor = UamWhite
-                            ),
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 4.dp
-                            )
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(12.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = totalPublicaciones.toString(),
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = UamTurquoiseDark
-                                )
-
-                                Text(
-                                    text = "Publicados",
-                                    color = UamGrayText
-                                )
-                            }
-                        }
-
-                        Card(
-                            modifier = Modifier.weight(1f),
-                            colors = CardDefaults.cardColors(
-                                containerColor = UamWhite
-                            ),
-                            elevation = CardDefaults.cardElevation(
-                                defaultElevation = 4.dp
-                            )
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(12.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = totalCategorias.toString(),
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = UamTurquoiseDark
-                                )
-
-                                Text(
-                                    text = "Categorías",
-                                    color = UamGrayText
-                                )
-                            }
-                        }
+                        StatsCard(title = "Publicados", count = totalPublicaciones.toString(), modifier = Modifier.weight(1f))
+                        StatsCard(title = "Categorías", count = totalCategorias.toString(), modifier = Modifier.weight(1f))
                     }
-
                     Spacer(modifier = Modifier.height(16.dp))
-
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CategoriaChip(
-                            text = "Todos",
-                            selected = categoriaSeleccionada == "Todos",
-                            onClick = {
-                                categoriaSeleccionada = "Todos"
-                            }
-                        )
+                        CategoriaChip(text = "Todos", selected = categoriaSeleccionada == "Todos") { categoriaSeleccionada = "Todos" }
+                        CategoriaChip(text = "Bolsas", selected = categoriaSeleccionada == "Bolsas") { categoriaSeleccionada = "Bolsas" }
+                        CategoriaChip(text = "Llaves", selected = categoriaSeleccionada == "Llaves") { categoriaSeleccionada = "Llaves" }
+                        CategoriaChip(text = "Electrónica", selected = categoriaSeleccionada == "Electrónica") { categoriaSeleccionada = "Electrónica" }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
-                        CategoriaChip(
-                            text = "Bolsas",
-                            selected = categoriaSeleccionada == "Bolsas",
-                            onClick = {
-                                categoriaSeleccionada = "Bolsas"
-                            }
+                items(objetosFiltrados) { publicacion ->
+                    ObjetoCard(publicacion = publicacion)
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StatsCard(title: String, count: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(containerColor = UamWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = count, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = UamTurquoiseDark)
+            Text(text = title, color = UamGrayText, fontSize = 12.sp)
+        }
+    }
+}
+
+@Composable
+fun ObjetoCard(publicacion: Publicacion) {
+    val objeto = publicacion.objeto
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = UamWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Imagen del objeto
+            Card(
+                modifier = Modifier.size(80.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = UamBackground)
+            ) {
+                if (!objeto?.foto.isNullOrEmpty()) {
+                    AsyncImage(
+                        model = objeto?.foto,
+                        contentDescription = objeto?.nombre,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.ImageNotSupported,
+                            contentDescription = null,
+                            tint = UamGrayText
                         )
                     }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = objeto?.nombre ?: "Sin nombre",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = UamDarkText
+                )
+                Text(
+                    text = objeto?.descripcion ?: "Sin descripción",
+                    fontSize = 13.sp,
+                    color = UamGrayText,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.AccessTime,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = UamTurquoise
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    
+                    val hora = if ((publicacion.fechaHora?.length ?: 0) >= 16) {
+                        publicacion.fechaHora?.substring(11, 16) ?: ""
+                    } else publicacion.fechaHora ?: ""
+                    
+                    Text(text = hora, fontSize = 11.sp, color = UamGrayText)
+                    
+                    Spacer(modifier = Modifier.width(12.dp))
+                    
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = UamTurquoise
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = publicacion.ubicacion,
+                        fontSize = 11.sp,
+                        color = UamGrayText,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
@@ -350,21 +279,16 @@ fun CategoriaChip(
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.clickable {
-            onClick()
-        },
-        color = if (selected) UamTurquoiseDark else UamTurquoiseLight,
+        modifier = Modifier.clickable { onClick() },
+        color = if (selected) UamTurquoise else UamBackground,
         shape = RoundedCornerShape(50.dp)
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(
-                horizontal = 14.dp,
-                vertical = 7.dp
-            ),
-            color = if (selected) UamWhite else UamTurquoiseDark,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            color = if (selected) UamWhite else UamTurquoise,
             fontSize = 12.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
         )
     }
 }

@@ -33,7 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.network.SessionManager
-import ni.edu.uam.finduam.model.ObjetoResponse
+import ni.edu.uam.finduam.model.Publicacion
 
 @Composable
 fun MisPublicacionesScreen() {
@@ -47,7 +47,7 @@ fun MisPublicacionesScreen() {
     val idUsuario = sessionManager.obtenerIdUsuario()
 
     var misPublicaciones by remember {
-        mutableStateOf<List<ObjetoResponse>>(emptyList())
+        mutableStateOf<List<Publicacion>>(emptyList())
     }
 
     LaunchedEffect(Unit) {
@@ -62,7 +62,7 @@ fun MisPublicacionesScreen() {
                 misPublicaciones =
                     response.body()
                         ?.filter {
-                            it.usuario.idUsuario == idUsuario
+                            it.idUsuario == idUsuario
                         }
                         ?: emptyList()
             }
@@ -121,7 +121,7 @@ fun MisPublicacionesScreen() {
                     }
                 }
 
-                items(misPublicaciones) { objeto ->
+                items(misPublicaciones) { publicacion ->
 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -140,18 +140,18 @@ fun MisPublicacionesScreen() {
                             )
 
                             Text(
-                                text = objeto.nombre,
+                                text = publicacion.objeto?.nombre ?: "Sin nombre",
                                 color = UamDarkText,
                                 fontWeight = FontWeight.SemiBold
                             )
 
                             Text(
-                                text = objeto.ubicacion,
+                                text = publicacion.ubicacion,
                                 fontSize = 12.sp
                             )
 
                             Text(
-                                text = objeto.fechaPublicacion.substring(0,10),
+                                text = publicacion.fechaHora?.take(10) ?: "",
                                 fontSize = 12.sp
                             )
 
