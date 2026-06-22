@@ -86,15 +86,6 @@ fun LoginScreen(
 
     val context = LocalContext.current
 
-    val usuarioDemo = Usuario(
-        idUsuario = 1,
-        nombre = "Nicole",
-        apellido = "Pérez García",
-        fotoPerfil = "",
-        correoUam = "nombre@uam.edu.ni",
-        telefono = "60000000",
-        password = "123"
-    )
 
     Box(
         modifier = Modifier
@@ -109,12 +100,6 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_uam),
-                contentDescription = "Logo Uam",
-                modifier = Modifier.size(160.dp),
-                contentScale = ContentScale.Fit
-            )
 
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -167,7 +152,7 @@ fun LoginScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
-                            Text(text = "nombre@uam.edu.ni")
+                            Text(text = "correo")
                         },
                         leadingIcon = {
                             Icon(
@@ -306,8 +291,10 @@ fun LoginScreen(
 
                                 } catch (e: Exception) {
 
+                                    e.printStackTrace()
+
                                     errorMessage =
-                                        "Error de conexión con el servidor."
+                                        e.message ?: "Error desconocido"
                                 }
                             }
                         },
