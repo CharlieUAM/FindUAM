@@ -233,28 +233,6 @@ fun PublicarScreen(
                             )
                         }
                     }
-
-                        Icon(
-                            imageVector = Icons.Default.AddAPhoto,
-                            contentDescription = "Agregar foto",
-                            tint = UamTurquoiseDark,
-                            modifier = Modifier.size(34.dp)
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = if (imagenUri == null)
-                                "Toca para añadir foto"
-                            else
-                                "Foto seleccionada ✓",
-                            color = UamGrayText,
-                            fontSize = 13.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(18.dp))
@@ -489,3 +467,4 @@ fun PublicarScreen(
             }
         }
     }
+}
