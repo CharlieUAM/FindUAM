@@ -202,6 +202,7 @@ fun PublicarScreen(
                         },
                     contentAlignment = Alignment.Center
                 ) {
+
                     if (imagenUri != null) {
 
                         AsyncImage(
@@ -232,6 +233,7 @@ fun PublicarScreen(
                             )
                         }
                     }
+
                         Icon(
                             imageVector = Icons.Default.AddAPhoto,
                             contentDescription = "Agregar foto",
