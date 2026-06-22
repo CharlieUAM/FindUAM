@@ -118,6 +118,9 @@ fun AppNavigation() {
                 },
                 onNavigateMisPublicaciones = {
                     navController.navigate(Routes.MIS_PUBLICACIONES)
+                },
+                onNavigateAjustes = {
+                    navController.navigate(Routes.AJUSTES)
                 }
             )
         }
