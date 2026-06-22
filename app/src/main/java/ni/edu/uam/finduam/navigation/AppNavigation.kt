@@ -10,7 +10,7 @@ import ni.edu.uam.finduam.screens.PublicarScreen
 import ni.edu.uam.finduam.screens.PerfilScreen
 import ni.edu.uam.finduam.screens.RegisterScreen
 import ni.edu.uam.finduam.screens.MisPublicacionesScreen
-
+import ni.edu.uam.finduam.screens.AjustesScreen
 
 object Routes {
     const val LOGIN = "login"
@@ -118,6 +118,23 @@ fun AppNavigation() {
                 },
                 onNavigateMisPublicaciones = {
                     navController.navigate(Routes.MIS_PUBLICACIONES)
+                }
+            )
+        }
+        composable(Routes.AJUSTES) {
+
+            AjustesScreen(
+
+                onVolver = {
+                    navController.popBackStack()
+                },
+
+                onEditarPerfil = {
+                    // luego navegaremos a EditarPerfilScreen
+                },
+
+                onCambiarPassword = {
+                    // luego navegaremos a CambiarPasswordScreen
                 }
             )
         }
