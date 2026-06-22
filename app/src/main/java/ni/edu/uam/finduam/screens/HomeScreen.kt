@@ -105,22 +105,33 @@ fun HomeScreen(
         .distinct()
         .size
 
-    val objetosFiltrados = when (categoriaSeleccionada) {
+    val objetosFiltrados = objetosApi
+        .filter {
 
-        "Llaves" -> objetosApi.filter {
-            it.idCategoria == 1
+            val coincideCategoria =
+                when (categoriaSeleccionada) {
+
+                    "Llaves" -> it.idCategoria == 1
+                    "Electrónica" -> it.idCategoria == 2
+                    "Bolsas" -> it.idCategoria == 3
+                    "Documentos" -> it.idCategoria == 4
+                    "Accesorios" -> it.idCategoria == 5
+
+                    else -> true
+                }
+
+            val coincideBusqueda =
+                it.nombre.contains(
+                    textoBusqueda,
+                    ignoreCase = true
+                ) ||
+                        it.descripcion.contains(
+                            textoBusqueda,
+                            ignoreCase = true
+                        )
+
+            coincideCategoria && coincideBusqueda
         }
-
-        "Electrónica" -> objetosApi.filter {
-            it.idCategoria == 2
-        }
-
-        "Bolsas" -> objetosApi.filter {
-            it.idCategoria == 3
-        }
-
-        else -> objetosApi
-    }
 
     Scaffold(
         containerColor = UamBackground,
