@@ -98,51 +98,6 @@ fun HomeScreen(
         }
     }
 
-   /* val usuarioDemo = Usuario(
-        idUsuario = 1,
-        nombre = "Nicole",
-        apellido = "Pérez García",
-        fotoPerfil = "",
-        correoUam = "nicole@uam.edu.ni",
-        telefono = "60000000",
-        password = "12345678"
-    )
-
-    val categoriaLlaves = Categoria(1, "Llaves")
-    val categoriaElectronica = Categoria(2, "Electrónica")
-    val categoriaMochilas = Categoria(3, "Bolsas y Mochilas")
-
-    val objetosPublicados = listOf(
-        Objeto(
-            idObjeto = 1,
-            nombre = "Llaves con llavero azul UAM",
-            fotoObjeto = "",
-            ubicacion = "Cafetería Campus",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 11, 15),
-            categoria = categoriaLlaves,
-            publicadoPor = usuarioDemo
-        ),
-        Objeto(
-            idObjeto = 2,
-            nombre = "AirPods Pro blancos",
-            fotoObjeto = "",
-            ubicacion = "Facultad de Ciencias, Aula 201",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 9, 45),
-            categoria = categoriaElectronica,
-            publicadoPor = usuarioDemo
-        ),
-        Objeto(
-            idObjeto = 3,
-            nombre = "Mochila negra Nike",
-            fotoObjeto = "",
-            ubicacion = "Edificio M, segundo piso",
-            fechaHora = LocalDateTime.of(2026, 5, 28, 8, 30),
-            categoria = categoriaMochilas,
-            publicadoPor = usuarioDemo
-        )
-    )
-*/
-
     val totalPublicaciones = objetosApi.size
 
     val totalCategorias = objetosApi
@@ -189,7 +144,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(UamTurquoise)
-                    .padding(start = 20.dp, end = 20.dp, top = 40.dp, bottom = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp, top = 38.dp, bottom = 20.dp)
             ) {
                 Text(
                     text = "FindUAM",
