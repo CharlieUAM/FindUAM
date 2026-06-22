@@ -318,6 +318,21 @@ fun HomeScreen(
                                 categoriaSeleccionada = "Electrónica"
                             }
                         )
+                        CategoriaChip(
+                            text = "Documentos",
+                            selected = categoriaSeleccionada == "Documentos",
+                            onClick = {
+                                categoriaSeleccionada = "Documentos"
+                            }
+                        )
+
+                        CategoriaChip(
+                            text = "Accesorios",
+                            selected = categoriaSeleccionada == "Accesorios",
+                            onClick = {
+                                categoriaSeleccionada = "Accesorios"
+                            }
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
