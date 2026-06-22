@@ -36,7 +36,11 @@ import ni.edu.uam.finduam.network.SessionManager
 import ni.edu.uam.finduam.model.Publicacion
 
 @Composable
-fun MisPublicacionesScreen() {
+fun MisPublicacionesScreen(
+    onNavigateHome: () -> Unit,
+    onNavigatePublicar: () -> Unit,
+    onNavigatePerfil: () -> Unit
+) {
 
     val context = LocalContext.current
 
@@ -51,30 +55,28 @@ fun MisPublicacionesScreen() {
     }
 
     LaunchedEffect(Unit) {
-
         try {
-
-            val response =
-                RetrofitClient.apiService.obtenerPublicaciones()
-
+            val response = RetrofitClient.apiService.obtenerPublicaciones()
             if (response.isSuccessful) {
-
-                misPublicaciones =
-                    response.body()
-                        ?.filter {
-                            it.idUsuario == idUsuario
-                        }
-                        ?: emptyList()
+                misPublicaciones = response.body()
+                    ?.filter { it.idUsuario == idUsuario }
+                    ?: emptyList()
             }
-
         } catch (e: Exception) {
-
             e.printStackTrace()
         }
     }
 
     Scaffold(
-        containerColor = UamBackground
+        containerColor = UamBackground,
+        bottomBar = {
+            BottomNavigationFindUAM(
+                selectedItem = "Perfil",
+                onNavigateHome = onNavigateHome,
+                onNavigatePublicar = onNavigatePublicar,
+                onNavigatePerfil = onNavigatePerfil
+            )
+        }
     ) { paddingValues ->
 
         Column(
@@ -94,46 +96,32 @@ fun MisPublicacionesScreen() {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 if (misPublicaciones.isEmpty()) {
-
                     item {
-
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
                                 containerColor = UamWhite
                             )
                         ) {
-
-                            Column(
-                                modifier = Modifier.padding(20.dp)
-                            ) {
-
+                            Column(modifier = Modifier.padding(20.dp)) {
                                 Text(
                                     text = "Aún no has publicado objetos",
                                     fontWeight = FontWeight.Bold
                                 )
-
-                                Text(
-                                    text = "Cuando publiques un objeto aparecerá aquí."
-                                )
+                                Text(text = "Cuando publiques un objeto aparecerá aquí.")
                             }
                         }
                     }
                 }
 
                 items(misPublicaciones) { publicacion ->
-
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
                             containerColor = UamWhite
                         )
                     ) {
-
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-
+                        Column(modifier = Modifier.padding(16.dp)) {
                             Icon(
                                 imageVector = Icons.Default.Inventory2,
                                 contentDescription = null
@@ -142,7 +130,7 @@ fun MisPublicacionesScreen() {
                             Text(
                                 text = publicacion.objeto?.nombre ?: "Sin nombre",
                                 color = UamDarkText,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.Bold
                             )
 
                             Text(
@@ -156,7 +144,7 @@ fun MisPublicacionesScreen() {
                             )
 
                             Button(
-                                onClick = { },
+                                onClick = { /* TODO: Implementar editar */ },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = UamTurquoise
                                 )

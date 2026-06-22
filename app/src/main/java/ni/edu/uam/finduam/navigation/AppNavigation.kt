@@ -21,23 +21,23 @@ object Routes {
     const val MIS_PUBLICACIONES = "mis_publicaciones"
 }
 
-// Función principal que controla la navegación entre pantallas.
 @Composable
 fun AppNavigation() {
 
-    // Controlador de navegación.
     val navController = rememberNavController()
 
-    // Contenedor de pantallas.
     NavHost(
         navController = navController,
         startDestination = Routes.LOGIN
     ) {
         composable(Routes.MIS_PUBLICACIONES) {
-            MisPublicacionesScreen()
+            MisPublicacionesScreen(
+                onNavigateHome = { navController.navigate(Routes.HOME) },
+                onNavigatePublicar = { navController.navigate(Routes.PUBLICAR) },
+                onNavigatePerfil = { navController.navigate(Routes.PERFIL) }
+            )
         }
 
-        // Pantalla de inicio de sesión.
         composable(Routes.LOGIN) {
             LoginScreen(
                 onLoginSuccess = {
@@ -54,7 +54,6 @@ fun AppNavigation() {
 
         }
 
-        // Pantalla principal.
         composable(Routes.HOME) {
             HomeScreen(
                 onNavigateHome = {
@@ -80,10 +79,8 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla para publicar objeto.
         composable(Routes.PUBLICAR) {
             PublicarScreen(
-
                 onNavigateHome = {
                     navController.navigate(Routes.HOME)
                 },
@@ -96,7 +93,6 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de perfil.
         composable(Routes.PERFIL) {
             PerfilScreen(
                 onCerrarSesion = {
@@ -120,6 +116,5 @@ fun AppNavigation() {
                 }
             )
         }
-
     }
 }
