@@ -1,34 +1,53 @@
 package ni.edu.uam.finduam.network
 
-import ni.edu.uam.finduam.model.LoginRequest
-import ni.edu.uam.finduam.model.UsuarioRequest
-import ni.edu.uam.finduam.model.UsuarioResponse
+import ni.edu.uam.finduam.model.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
-import ni.edu.uam.finduam.model.ObjetoRequest
-import ni.edu.uam.finduam.model.ObjetoResponse
-import retrofit2.http.GET
+import retrofit2.http.*
 
 interface ApiService {
 
-        @POST("api/usuarios")
-        suspend fun registrarUsuario(
-            @Body usuario: UsuarioRequest
-        ): Response<UsuarioRequest>
+    // Endpoints para Usuarios
+    @POST("api/usuarios/login")
+    suspend fun login(@Body loginRequest: LoginRequest): Response<UsuarioResponse>
 
-        @POST("api/usuarios/login")
-        suspend fun login(
-            @Body request: LoginRequest
-        ): Response<UsuarioResponse>
+    @GET("api/usuarios")
+    suspend fun obtenerUsuarios(): Response<List<Usuario>>
 
-        @POST("api/objetos")
-        suspend fun publicarObjeto(
+    @GET("api/usuarios/{id}")
+    suspend fun obtenerUsuarioPorId(@Path("id") id: Long): Response<Usuario>
+
+    @POST("api/usuarios")
+    suspend fun registrarUsuario(
+        @Body usuario: UsuarioRequest
+    ): Response<UsuarioResponse>
+
+    @PUT("api/usuarios/{id}")
+    suspend fun actualizarUsuario(
+        @Path("id") id: Long,
+        @Body usuario: Usuario
+    ): Response<UsuarioResponse>
+
+    @DELETE("api/usuarios/{id}")
+    suspend fun eliminarUsuario(@Path("id") id: Long): Response<Unit>
+
+    // Endpoints para Publicaciones (Objetos)
+    @GET("api/publicaciones")
+    suspend fun obtenerPublicaciones(): Response<List<ObjetoResponse>>
+
+    @GET("api/publicaciones/{id}")
+    suspend fun obtenerPublicacionPorId(@Path("id") id: Long): Response<ObjetoResponse>
+
+    @POST("api/publicaciones")
+    suspend fun publicarObjeto(
         @Body objeto: ObjetoRequest
-        ): Response<ObjetoRequest>
+    ): Response<ObjetoResponse>
 
-        @GET("api/objetos")
-        suspend fun obtenerObjetos(
-        ): Response<List<ObjetoResponse>>
-    }
+    @PUT("api/publicaciones/{id}")
+    suspend fun actualizarPublicacion(
+        @Path("id") id: Long,
+        @Body objeto: ObjetoRequest
+    ): Response<ObjetoResponse>
 
+    @DELETE("api/publicaciones/{id}")
+    suspend fun eliminarPublicacion(@Path("id") id: Long): Response<Unit>
+}

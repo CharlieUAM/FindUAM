@@ -1,37 +1,13 @@
 package ni.edu.uam.finduam.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Mail
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,24 +15,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ni.edu.uam.finduam.model.Usuario
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import ni.edu.uam.finduam.R
-import ni.edu.uam.finduam.ui.theme.UamDarkText
-import ni.edu.uam.finduam.ui.theme.UamGrayText
-import ni.edu.uam.finduam.ui.theme.UamTurquoise
-import ni.edu.uam.finduam.ui.theme.UamTurquoiseDark
-import ni.edu.uam.finduam.ui.theme.UamTurquoiseLight
-import ni.edu.uam.finduam.ui.theme.UamWhite
-import androidx.compose.material3.TextButton
+import ni.edu.uam.finduam.ui.theme.*
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.rememberCoroutineScope
 import ni.edu.uam.finduam.network.RetrofitClient
 import ni.edu.uam.finduam.model.LoginRequest
 import ni.edu.uam.finduam.network.SessionManager
@@ -67,45 +31,19 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
-    var correoUam by remember {
-        mutableStateOf("")
-    }
-
-    var password by remember {
-        mutableStateOf("")
-    }
-
-    var passwordVisible by remember {
-        mutableStateOf(false)
-    }
-
-    var errorMessage by remember {
-        mutableStateOf("")
-    }
+    var correoUam by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
-
     val context = LocalContext.current
 
-    val usuarioDemo = Usuario(
-        idUsuario = 1,
-        nombre = "Nicole",
-        apellido = "Pérez García",
-        fotoPerfil = "",
-        correoUam = "nombre@uam.edu.ni",
-        telefono = "60000000",
-        password = "123"
-    )
-
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(UamTurquoiseLight),
+        modifier = Modifier.fillMaxSize().background(UamTurquoiseLight),
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -115,7 +53,6 @@ fun LoginScreen(
                 modifier = Modifier.size(160.dp),
                 contentScale = ContentScale.Fit
             )
-
 
             Spacer(modifier = Modifier.height(18.dp))
 
@@ -138,44 +75,18 @@ fun LoginScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = UamWhite
-                ),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp
-                )
+                colors = CardDefaults.cardColors(containerColor = UamWhite),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        text = "Correo UAM",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = UamDarkText
-                    )
-
+                Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
+                    Text(text = "Correo UAM", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = UamDarkText)
                     Spacer(modifier = Modifier.height(8.dp))
-
                     OutlinedTextField(
                         value = correoUam,
-                        onValueChange = {
-                            correoUam = it
-                            errorMessage = ""
-                        },
+                        onValueChange = { correoUam = it; errorMessage = "" },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = {
-                            Text(text = "nombre@uam.edu.ni")
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Mail,
-                                contentDescription = "Correo",
-                                tint = UamGrayText
-                            )
-                        },
+                        placeholder = { Text(text = "nombre@uam.edu.ni") },
+                        leadingIcon = { Icon(Icons.Default.Mail, contentDescription = null, tint = UamGrayText) },
                         singleLine = true,
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -188,55 +99,25 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        text = "Contraseña",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = UamDarkText
-                    )
-
+                    Text(text = "Contraseña", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = UamDarkText)
                     Spacer(modifier = Modifier.height(8.dp))
-
                     OutlinedTextField(
                         value = password,
-                        onValueChange = {
-                            password = it
-                            errorMessage = ""
-                        },
+                        onValueChange = { password = it; errorMessage = "" },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = {
-                            Text(text = "Ingresa tu contraseña")
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Lock,
-                                contentDescription = "Contraseña",
-                                tint = UamGrayText
-                            )
-                        },
+                        placeholder = { Text(text = "Ingresa tu contraseña") },
+                        leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = UamGrayText) },
                         trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    passwordVisible = !passwordVisible
-                                }
-                            ) {
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
                                 Icon(
-                                    imageVector = if (passwordVisible) {
-                                        Icons.Default.VisibilityOff
-                                    } else {
-                                        Icons.Default.Visibility
-                                    },
-                                    contentDescription = "Mostrar u ocultar contraseña",
+                                    imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = null,
                                     tint = UamGrayText
                                 )
                             }
                         },
                         singleLine = true,
-                        visualTransformation = if (passwordVisible) {
-                            VisualTransformation.None
-                        } else {
-                            PasswordVisualTransformation()
-                        },
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = UamTurquoise,
@@ -248,97 +129,59 @@ fun LoginScreen(
 
                     if (errorMessage.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(10.dp))
-
-                        Text(
-                            text = errorMessage,
-                            color = Color.Red,
-                            fontSize = 12.sp
-                        )
+                        Text(text = errorMessage, color = Color.Red, fontSize = 12.sp)
                     }
 
                     Spacer(modifier = Modifier.height(22.dp))
 
                     Button(
                         onClick = {
-
                             if (correoUam.isBlank() || password.isBlank()) {
                                 errorMessage = "Completa tu correo UAM y contraseña."
                                 return@Button
                             }
-
                             scope.launch {
-
                                 try {
-
-                                    val response =
-                                        RetrofitClient.apiService.login(
-                                            LoginRequest(
-                                                correoUam = correoUam,
-                                                password = password
-                                            )
-                                        )
+                                    val response = RetrofitClient.apiService.login(
+                                        LoginRequest(correoUam = correoUam, password = password)
+                                    )
 
                                     if (response.isSuccessful) {
-
                                         val usuario = response.body()
-
                                         if (usuario != null) {
-
-                                            val sessionManager =
-                                                SessionManager(context)
-
-                                            sessionManager.guardarUsuario(
+                                            SessionManager(context).guardarUsuario(
                                                 idUsuario = usuario.idUsuario,
                                                 nombre = usuario.nombre,
                                                 apellido = usuario.apellido,
                                                 correoUam = usuario.correoUam,
                                                 telefono = usuario.telefono
                                             )
-
                                             onLoginSuccess()
                                         }
-
                                     } else {
-
-                                        errorMessage =
-                                            "Correo o contraseña incorrectos."
+                                        errorMessage = when(response.code()) {
+                                            401 -> "Correo o contraseña incorrectos."
+                                            405 -> "Error del servidor (405): Conflicto de rutas."
+                                            else -> "Error del servidor: ${response.code()}"
+                                        }
                                     }
-
                                 } catch (e: Exception) {
-
-                                    errorMessage =
-                                        "Error de conexión con el servidor."
+                                    errorMessage = "Error de conexión: ${e.message}"
                                 }
                             }
                         },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(52.dp),
+                        modifier = Modifier.fillMaxWidth().height(52.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = UamTurquoise,
-                            contentColor = UamWhite
-                        )
+                        colors = ButtonDefaults.buttonColors(containerColor = UamTurquoise, contentColor = UamWhite)
                     ) {
-                        Text(
-                            text = "Entrar",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Text(text = "Entrar", fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-
                     TextButton(
-                        onClick = {
-                            onRegisterClick()
-                        },
+                        onClick = { onRegisterClick() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(
-                            text = "¿No tienes cuenta? Regístrate",
-                            color = UamTurquoise,
-                            fontWeight = FontWeight.SemiBold
-                        )
+                        Text(text = "¿No tienes cuenta? Regístrate", color = UamTurquoise, fontWeight = FontWeight.SemiBold)
                     }
                 }
             }

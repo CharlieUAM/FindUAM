@@ -55,7 +55,7 @@ fun MisPublicacionesScreen() {
         try {
 
             val response =
-                RetrofitClient.apiService.obtenerObjetos()
+                RetrofitClient.apiService.obtenerPublicaciones()
 
             if (response.isSuccessful) {
 

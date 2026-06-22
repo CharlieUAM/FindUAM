@@ -11,14 +11,14 @@ class SessionManager(context: Context) {
         )
 
     fun guardarUsuario(
-        idUsuario: Int,
+        idUsuario: Long,
         nombre: String,
         apellido: String,
         correoUam: String,
         telefono: String
     ) {
         prefs.edit()
-            .putInt("idUsuario", idUsuario)
+            .putLong("idUsuario", idUsuario)
             .putString("nombre", nombre)
             .putString("apellido", apellido)
             .putString("correoUam", correoUam)
@@ -26,19 +26,19 @@ class SessionManager(context: Context) {
             .apply()
     }
 
-    fun obtenerIdUsuario() =
-        prefs.getInt("idUsuario", 0)
+    fun obtenerIdUsuario(): Long =
+        prefs.getLong("idUsuario", 0L)
 
-    fun obtenerNombre() =
+    fun obtenerNombre(): String =
         prefs.getString("nombre", "") ?: ""
 
-    fun obtenerApellido() =
+    fun obtenerApellido(): String =
         prefs.getString("apellido", "") ?: ""
 
-    fun obtenerCorreo() =
+    fun obtenerCorreo(): String =
         prefs.getString("correoUam", "") ?: ""
 
-    fun obtenerTelefono() =
+    fun obtenerTelefono(): String =
         prefs.getString("telefono", "") ?: ""
 
     fun cerrarSesion() {

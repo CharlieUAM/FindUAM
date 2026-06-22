@@ -84,7 +84,7 @@ fun HomeScreen(
         try {
 
             val response =
-                RetrofitClient.apiService.obtenerObjetos()
+                RetrofitClient.apiService.obtenerPublicaciones()
 
             if (response.isSuccessful) {
 
@@ -336,39 +336,7 @@ fun HomeScreen(
                                 categoriaSeleccionada = "Bolsas"
                             }
                         )
-
-                        CategoriaChip(
-                            text = "Llaves",
-                            selected = categoriaSeleccionada == "Llaves",
-                            onClick = {
-                                categoriaSeleccionada = "Llaves"
-                            }
-                        )
-
-                        CategoriaChip(
-                            text = "Electrónica",
-                            selected = categoriaSeleccionada == "Electrónica",
-                            onClick = {
-                                categoriaSeleccionada = "Electrónica"
-                            }
-                        )
                     }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = "${objetosFiltrados.size} publicaciones disponibles",
-                        color = UamGrayText,
-                        fontSize = 13.sp
-                    )
-                }
-
-                items(objetosFiltrados) { objeto ->
-                    ObjetoCard(objeto = objeto)
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(18.dp))
                 }
             }
         }
@@ -399,160 +367,4 @@ fun CategoriaChip(
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
         )
     }
-}
-@Composable
-fun ObjetoCard(
-    objeto: ObjetoResponse
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = UamWhite
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        )
-    ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(145.dp)
-                    .background(UamTurquoiseLight),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Inventory2,
-                        contentDescription = "Foto del objeto",
-                        tint = UamTurquoiseDark,
-                        modifier = Modifier.size(60.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "Sin fotografía",
-                        color = UamGrayText,
-                        fontSize = 12.sp
-                    )
-                }
-
-                Surface(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(10.dp),
-                    color = UamTurquoiseDark,
-                    shape = RoundedCornerShape(50.dp)
-                ) {
-                    Text(
-                        text = when (objeto.idCategoria) {
-                            1 -> "Llaves"
-                            2 -> "Electrónica"
-                            3 -> "Bolsas"
-                            4 -> "Documentos"
-                            5 -> "Accesorios"
-                            else -> "Otros"
-                        },
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        color = UamWhite,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = objeto.nombre,
-                    color = UamDarkText,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = objeto.descripcion,
-                    color = UamGrayText,
-                    fontSize = 13.sp
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
-                        contentDescription = "Ubicación",
-                        tint = UamGrayText,
-                        modifier = Modifier.size(17.dp)
-                    )
-
-                    Text(
-                        text = objeto.ubicacion,
-                        color = UamGrayText,
-                        fontSize = 13.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AccessTime,
-                        contentDescription = "Hora",
-                        tint = UamGrayText,
-                        modifier = Modifier.size(17.dp)
-                    )
-
-                    Text(
-                        text = objeto.fechaPublicacion.substring(0,10),
-                        color = UamGrayText,
-                        fontSize = 13.sp
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "Publicado por: ${objeto.usuario.nombre} ${objeto.usuario.apellido}",
-                    color = UamGrayText,
-                    fontSize = 12.sp
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Button(
-                    onClick = {
-                        // Más adelante aquí se abrirá WhatsApp con objeto.contactarPorWhatsapp().
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = UamTurquoise,
-                        contentColor = UamWhite
-                    )
-                ) {
-                    Text(text = "Solicitar")
-                }
-            }
-        }
-    }
-}
-
-fun obtenerHora(fechaHora: LocalDateTime): String {
-    val hora = fechaHora.hour.toString().padStart(2, '0')
-    val minuto = fechaHora.minute.toString().padStart(2, '0')
-    return "$hora:$minuto"
 }
