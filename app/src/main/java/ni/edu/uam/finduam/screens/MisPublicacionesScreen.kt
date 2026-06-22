@@ -2,8 +2,10 @@ package ni.edu.uam.finduam.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -85,11 +87,32 @@ fun MisPublicacionesScreen() {
                 .padding(16.dp)
         ) {
 
-            Text(
-                text = "Mis Publicaciones",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = UamTurquoiseDark
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+
+                    Text(
+                        text = "📦 Mis Publicaciones",
+                        color = UamWhite,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = "Administra tus objetos publicados",
+                        color = UamWhite
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Text(
                 text = "${misPublicaciones.size} publicaciones",
                 color = UamTurquoiseDark,
@@ -97,6 +120,9 @@ fun MisPublicacionesScreen() {
             )
 
             LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 if (misPublicaciones.isEmpty()) {
@@ -152,6 +178,11 @@ fun MisPublicacionesScreen() {
                             )
 
                             Text(
+                                text = objeto.descripcion,
+                                fontSize = 13.sp
+                            )
+
+                            Text(
                                 text = objeto.ubicacion,
                                 fontSize = 12.sp
                             )
@@ -167,7 +198,7 @@ fun MisPublicacionesScreen() {
                                     containerColor = UamTurquoise
                                 )
                             ) {
-                                Text("Editar")
+                                Text("Editar publicación")
                             }
                         }
                     }
