@@ -56,13 +56,28 @@ fun RegisterScreen(
                     color = UamTurquoiseDark
                 )
 
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Crea tu cuenta para comenzar a usar FindUAM",
+                    color = UamGrayText,
+                    fontSize = 13.sp
+                )
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = nombre,
                     onValueChange = { nombre = it },
                     label = { Text("Nombre") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -71,7 +86,14 @@ fun RegisterScreen(
                     value = apellido,
                     onValueChange = { apellido = it },
                     label = { Text("Apellido") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -80,7 +102,14 @@ fun RegisterScreen(
                     value = correo,
                     onValueChange = { correo = it },
                     label = { Text("Correo UAM") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -88,8 +117,15 @@ fun RegisterScreen(
                 OutlinedTextField(
                     value = telefono,
                     onValueChange = { telefono = it },
-                    label = { Text("Teléfono") },
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Telefono") },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -98,7 +134,14 @@ fun RegisterScreen(
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("Contraseña") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -107,7 +150,14 @@ fun RegisterScreen(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
                     label = { Text("Confirmar contraseña") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = UamTurquoise,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = UamTurquoiseLight,
+                        unfocusedContainerColor = UamTurquoiseLight
+                    )
                 )
 
                 if (error.isNotEmpty()) {
@@ -165,7 +215,9 @@ fun RegisterScreen(
                             }
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(54.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = UamTurquoise
                     )

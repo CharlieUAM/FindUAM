@@ -152,7 +152,7 @@ fun LoginScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
-                            Text(text = "correo")
+                            Text(text = "Correo")
                         },
                         leadingIcon = {
                             Icon(
@@ -190,7 +190,7 @@ fun LoginScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         placeholder = {
-                            Text(text = "Ingresa tu contraseña")
+                            Text(text = "Contraseña")
                         },
                         leadingIcon = {
                             Icon(
